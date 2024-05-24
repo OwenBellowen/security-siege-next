@@ -1,6 +1,9 @@
 # security-siege-next
 A rewrite of my Discord bot - Security Siege
 
+## About
+This is a rewrite of my Discord bot, Security Siege. It is a bot that is designed to help moderate servers and provide useful tools for server owners and administrators. It is written in TypeScript and uses the Discord.js library. It is currently in development and is not yet ready for use.
+
 ## Installation
 
 1. Clone the repository
