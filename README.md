@@ -9,6 +9,7 @@ This is a rewrite of my Discord bot, Security Siege. It is a bot that is designe
 1. Clone the repository
 2. Run `npm install`
 3. Create a `.env` file in the root directory and add the following:
+
 ```
 TOKEN=YOUR_DIS
 ```
