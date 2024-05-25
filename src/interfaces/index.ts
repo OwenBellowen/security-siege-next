@@ -5,11 +5,14 @@ import {
     SlashCommandSubcommandBuilder,
     SlashCommandSubcommandGroupBuilder,
     ClientEvents,
-    PermissionResolvable
+    PermissionResolvable,
+    AutocompleteInteraction,
+    SlashCommandOptionsOnlyBuilder,
+    SlashCommandSubcommandsOnlyBuilder
 } from "discord.js";
 import BotClient from "../classes/Client";
 
-type CategoryType = "admin" | "misc" | "moderation" | "utility" | "dev";
+type CategoryType = "admin" | "misc" | "moderation" | "utility" | "dev" | "info";
 
 interface CommandConfig {
     category: CategoryType;
@@ -21,9 +24,12 @@ interface CommandConfig {
 export interface BaseCommand {
     data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">
         | Omit<SlashCommandSubcommandBuilder, "addSubcommand" | "addSubcommandGroup">
-        | Omit<SlashCommandSubcommandGroupBuilder, "addSubcommand" | "addSubcommandGroup">;
+        | Omit<SlashCommandSubcommandGroupBuilder, "addSubcommand" | "addSubcommandGroup">
+        | SlashCommandOptionsOnlyBuilder
+        | SlashCommandSubcommandsOnlyBuilder;
     config: CommandConfig;
     execute: (interaction: CommandInteraction) => Awaitable<unknown>;
+    autocomplete?: (interaction: AutocompleteInteraction) => Awaitable<unknown>;
 }
 
 export interface BaseEvent {

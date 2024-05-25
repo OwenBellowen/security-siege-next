@@ -5,6 +5,7 @@ import BotClient from "./Client";
 
 import { REST, Routes } from "discord.js";
 import { guildID } from "../../config/config.json";
+import Logger from "./Logger";
 
 export default class CommandHandler {
     constructor(private client: BotClient) {}
@@ -19,7 +20,7 @@ export default class CommandHandler {
             }
         }
 
-        console.log(`Loaded ${this.client.commands.size} commands!`);
+        Logger.success("Commands loaded.");
     }
 
     public async registerCommands(): Promise<void> {
@@ -29,13 +30,13 @@ export default class CommandHandler {
 
         const commands = this.client.commands.map(command => command.data.toJSON());
         try {
-            console.log("Started refreshing application (/) commands.");
+            Logger.info("Started registering application commands.");
 
             if (!process.env.CLIENT_ID) throw new Error("No client ID provided.");
 
             await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildID), { body: commands });
 
-            console.log("Successfully registered application commands.");
+            Logger.success("Successfully registered application commands.");
         } catch (error) {
             console.error(error);
         }

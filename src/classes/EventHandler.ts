@@ -2,6 +2,7 @@ import { readdirSync } from "fs";
 import { join } from "path";
 import { BaseEvent } from "../interfaces";
 import BotClient from "./Client";
+import Logger from "./Logger";
 
 export default class EventHandler {
     constructor(private client: BotClient) {}
@@ -22,6 +23,6 @@ export default class EventHandler {
             }
         }
 
-        console.log(`Loaded ${this.client.events.size} events!`);
+        Logger.success("Events loaded.");
     }
 }

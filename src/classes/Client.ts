@@ -35,6 +35,7 @@ export default class BotClient extends Client {
     public async start(): Promise<void> {
         this.login(process.env.TOKEN);
         this.commandHandler.loadCommands();
+        this.commandHandler.registerCommands();
         this.eventHandler.loadEvents();
     }
 }

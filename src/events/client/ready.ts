@@ -1,10 +1,22 @@
 import { BaseEvent } from "../../interfaces";
 import BotClient from "../../classes/Client";
+import Logger from "../../classes/Logger";
+import { ActivityType } from "discord.js";
 
 export default <BaseEvent>{
     name: "ready",
     once: true,
     execute(client: BotClient) {
-        console.log(`Logged in as ${client.user?.username}!`);
+        Logger.info(`Logged in as ${client.user?.tag}`);
+
+        client.user?.setPresence({
+            status: "online",
+            activities: [
+                {
+                    name: "your commands",
+                    type: ActivityType.Watching
+                }
+            ]
+        })
     }
 };
