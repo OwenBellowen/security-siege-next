@@ -2,7 +2,8 @@
 
 # Security Siege
 
-[![GitHub license](https://img.shields.io/github/license/OwenBellowen/security-siege)](https://github.com/OwenBellowen/security-siege-next/blob/main/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/OwenBellowen/security-siege)](https://github.com/OwenBellowen/security-siege-next/issues)  
+[![GitHub License](https://img.shields.io/github/license/Owenbellowen/security-siege-next)
+](https://github.com/OwenBellowen/security-siege-next/blob/main/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/OwenBellowen/security-siege-next)](https://github.com/OwenBellowen/security-siege-next/issues)  
 A rewrite of my Discord bot - Security Siege
 
 ## About
