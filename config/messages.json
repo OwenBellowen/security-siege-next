@@ -10,17 +10,19 @@
             "success": {
                 "noReason": {
                     "title": "User Banned",
-                    "description": "Successfully banned **{USER}**.",
-                    "footer": "Moderator: {MODERATOR}"
+                    "description": "Successfully banned **{USER}**."
                 },
                 "reason": {
                     "title": "User Banned",
-                    "description": "Successfully banned **{USER}**.\nReason: {REASON}",
-                    "footer": "Moderator: {MODERATOR}"
-                }
+                    "description": "Successfully banned **{USER}**.\nReason: {REASON}"
+                },
+                "dm": "You have been banned from **{GUILD}**. Reason: {REASON}",
+                "footer": "Banned by {MODERATOR}"
             },
             "highestRole": "You cannot ban **{USER}** because they have a higher role than you.",
             "selfBan": "You cannot ban yourself.",
+            "unableToBan": "I am unable to ban **{USER}**.",
+            "unableToBanOwner": "I am unable to ban the server owner.",
             "error": "An error occurred while trying to ban **{USER}**."
         }
     }
