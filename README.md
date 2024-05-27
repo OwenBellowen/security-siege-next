@@ -21,6 +21,17 @@ TOKEN=YOUR_DIS
 - [ ] Add more features (e.g. warnings, mutes, etc.)
 - [ ] Add more handlers (e.g. error handler, interaction handler, etc.)
 
+### Changelog
+
+- [x] Added basic commands
+- [x] Added basic event handlers
+- [x] Added basic error handler
+- [x] Added basic interaction handler
+
+## Contributing
+
+If you would like to contribute to this project, please fork the repository and submit a pull request. If you have any questions, please open an issue.
+
 ## License
 
 This project is licensed under the Apache-2.0 License - see the [LICENSE](LICENSE) file for details.
