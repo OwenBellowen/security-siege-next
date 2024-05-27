@@ -1,4 +1,8 @@
-# security-siege-next
+![Security Siege](./assets/Security%20Siege.gif)
+
+# Security Siege
+
+[![GitHub license](https://img.shields.io/github/license/OwenBellowen/security-siege)](https://github.com/OwenBellowen/security-siege-next/blob/main/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/OwenBellowen/security-siege)](https://github.com/OwenBellowen/security-siege-next/issues)  
 A rewrite of my Discord bot - Security Siege
 
 ## About
