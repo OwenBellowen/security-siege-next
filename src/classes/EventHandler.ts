@@ -2,7 +2,7 @@ import { readdirSync } from "fs";
 import { join } from "path";
 import { BaseEvent } from "../interfaces";
 import BotClient from "./Client";
-import Logger from "./Logger";
+import Logger from "../features/Logger";
 
 export default class EventHandler {
     constructor(private client: BotClient) {}

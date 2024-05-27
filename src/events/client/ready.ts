@@ -1,6 +1,6 @@
 import { BaseEvent } from "../../interfaces";
 import BotClient from "../../classes/Client";
-import Logger from "../../classes/Logger";
+import Logger from "../../features/Logger";
 import { ActivityType } from "discord.js";
 
 export default <BaseEvent>{

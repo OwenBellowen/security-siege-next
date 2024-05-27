@@ -6,7 +6,7 @@ import {
     CommandInteractionOptionResolver
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
-import Logger from "../../classes/Logger";
+import Logger from "../../features/Logger";
 import { moderation } from "../../../config/messages.json";
 
 const PurgeType = [

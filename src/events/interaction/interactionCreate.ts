@@ -1,7 +1,7 @@
 import { BaseEvent } from "../../interfaces";
 import BotClient from "../../classes/Client";
 import { CommandInteraction, AutocompleteInteraction } from "discord.js";
-import Logger from "../../classes/Logger";
+import Logger from "../../features/Logger";
 
 export default <BaseEvent>{
     name: "interactionCreate",

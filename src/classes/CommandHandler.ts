@@ -5,7 +5,7 @@ import BotClient from "./Client";
 
 import { REST, Routes, SlashCommandBuilder } from "discord.js";
 import { guildID } from "../../config/config.json";
-import Logger from "./Logger";
+import Logger from "../features/Logger";
 
 export default class CommandHandler {
     constructor(private client: BotClient) {}
