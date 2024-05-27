@@ -108,22 +108,22 @@ export default <BaseCommand>{
                 .addFields([
                     {
                         name: "Category",
-                        value: Utility.capitalize(command.config.category),
+                        value: `\`${Utility.capitalize(command.config.category)}\``,
                         inline: true
                     },
                     {
                         name: "Permissions",
-                        value: command.config.permissions.length ? command.config.permissions.join(", ") : "No permissions required.",
+                        value: `${command.config.permissions.length ? command.config.permissions.map(permission => `\`${permission}\``).join(", ") : "No permissions required."}`,
                         inline: true
                     },
                     {
                         name: "Usage",
-                        value: command.config.usage || "No usage provided.",
+                        value: `\`${command.config.usage}\`` || "No usage provided.",
                         inline: false
                     },
                     {
                         name: "Examples",
-                        value: command.config.examples.length ? command.config.examples.map(example => `\`${example}\``).join(", ") : "No examples provided.",
+                        value: `${command.config.examples.length ? command.config.examples.map(example => `\`${example}\``).join(", ") : "No examples provided."}`,
                         inline: false
                     }
                 ])

@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { CommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 
 export default <BaseCommand>{
@@ -13,6 +13,14 @@ export default <BaseCommand>{
         permissions: []
     },
     async execute(interaction: CommandInteraction) {
-        await interaction.reply("Pong!");
+        const botPing = Date.now() - interaction.createdTimestamp;
+        const apiPing = Math.round(interaction.client.ws.ping);
+
+        const embed = new EmbedBuilder()
+            .setTitle("Pong!")
+            .setDescription(`Bot Ping: ${botPing}ms\nAPI Ping: ${apiPing}ms`)
+            .setColor("Aqua");
+
+        await interaction.reply({ embeds: [embed] });
     },
 };
