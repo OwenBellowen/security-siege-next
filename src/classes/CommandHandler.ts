@@ -3,7 +3,7 @@ import { join } from "path";
 import { BaseCommand } from "../interfaces";
 import BotClient from "./Client";
 
-import { REST, Routes } from "discord.js";
+import { REST, Routes, SlashCommandBuilder } from "discord.js";
 import { guildID } from "../../config/config.json";
 import Logger from "./Logger";
 
@@ -28,7 +28,10 @@ export default class CommandHandler {
 
         const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
-        const commands = this.client.commands.map(command => command.data.toJSON());
+        const commands = this.client.commands.map(command => {
+            (command.data as SlashCommandBuilder).setDMPermission(false);
+            return command.data.toJSON();
+        });
         try {
             Logger.info("Started registering application commands.");
 

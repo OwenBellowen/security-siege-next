@@ -32,7 +32,8 @@ export default <BaseCommand>{
                 .setDescription("The type of messages to delete.")
                 .setRequired(false)
                 .addChoices(PurgeType),
-        ),
+        )
+        .setDefaultMemberPermissions("ManageMessages"),
     config: {
         category: "moderation",
         usage: "<amount> [type]",
@@ -68,13 +69,13 @@ export default <BaseCommand>{
         try {
             await channel.bulkDelete(filteredMessages);
             await interaction.reply({
-                content: moderation.purge.purgeSuccess.replace("{AMOUNT}", amount.toString()),
+                content: moderation.purge.success.replace("{AMOUNT}", amount.toString()),
                 ephemeral: true
             });
         } catch (error) {
             Logger.error(`Error purging messages: ${error}`);
             await interaction.reply({
-                content: moderation.purge.purgeError,
+                content: moderation.purge.error,
                 ephemeral: true
             });
         }

@@ -4,8 +4,7 @@ import { BaseCommand } from "../../interfaces";
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
         .setName("ping")
-        .setDescription("Replies with Pong!")
-        .setDMPermission(false),
+        .setDescription("Replies with Pong!"),
     config: {
         category: "misc",
         usage: "",
