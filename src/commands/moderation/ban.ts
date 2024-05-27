@@ -1,5 +1,13 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import {
+    CommandInteraction,
+    SlashCommandBuilder,
+    GuildMember,
+    CommandInteractionOptionResolver,
+    EmbedBuilder
+} from "discord.js";
 import { BaseCommand } from "../../interfaces";
+import Logger from "../../classes/Logger";
+import { moderation } from "../../../config/messages.json";
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
@@ -16,14 +24,19 @@ export default <BaseCommand>{
                 .setName("reason")
                 .setDescription("The reason for banning the user.")
                 .setRequired(false)
-        ),
+        )
+        .setDefaultMemberPermissions("BanMembers"),
     config: {
         category: "moderation",
-        usage: "",
-        examples: [],
-        permissions: []
+        usage: "<user> [reason]",
+        examples: ["@user", "@user spamming"],
+        permissions: ["BanMembers"]
     },
     async execute(interaction: CommandInteraction) {
-        await interaction.reply("Test");
+        const options = interaction.options as CommandInteractionOptionResolver;
+        const user = options.getMember("user") as GuildMember;
+        const reason = options.getString("reason") as string;
+
+
     },
 };

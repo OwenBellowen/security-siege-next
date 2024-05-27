@@ -2,8 +2,26 @@
     "moderation": {
         "purge": {
             "invalidAmount": "Please provide a valid amount of message(s) to purge.\nExpected a number between 1 and 100.\nGot: **{AMOUNT}**.",
-            "purgeSuccess": "Successfully purged **{AMOUNT}** message(s).",
-            "purgeError": "An error occurred while trying to purge message(s)."
+            "success": "Successfully purged **{AMOUNT}** message(s).",
+            "error": "An error occurred while trying to purge message(s)."
+        },
+        "ban": {
+            "invalidUser": "Please provide a valid user to ban.\nExpected a mention or a user ID.\nGot: **{USER}**.",
+            "success": {
+                "noReason": {
+                    "title": "User Banned",
+                    "description": "Successfully banned **{USER}**.",
+                    "footer": "Moderator: {MODERATOR}"
+                },
+                "reason": {
+                    "title": "User Banned",
+                    "description": "Successfully banned **{USER}**.\nReason: {REASON}",
+                    "footer": "Moderator: {MODERATOR}"
+                }
+            },
+            "highestRole": "You cannot ban **{USER}** because they have a higher role than you.",
+            "selfBan": "You cannot ban yourself.",
+            "error": "An error occurred while trying to ban **{USER}**."
         }
     }
 }
