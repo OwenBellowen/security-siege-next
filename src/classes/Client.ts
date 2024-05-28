@@ -1,5 +1,5 @@
 import { Client, Collection, IntentsBitField } from "discord.js";
-import { BaseCommand, BaseEvent } from "../interfaces";
+import { BaseCommand, BaseEvent, BaseSelectMenu } from "../interfaces";
 import { connect } from "mongoose";
 
 import CommandHandler from "./CommandHandler";
@@ -8,13 +8,16 @@ import Logger from "../features/Logger";
 
 import "dotenv/config";
 import config from "../../config/config.json";
+import Interactionhandler from "./InteractionHandler";
 
 export default class BotClient extends Client {
     public commands: Collection<string, BaseCommand> = new Collection();
     public events: Collection<string, BaseEvent> = new Collection();
+    public selectMenus: Collection<string, BaseSelectMenu> = new Collection();
 
     private commandHandler: CommandHandler = new CommandHandler(this);
     private eventHandler: EventHandler = new EventHandler(this);
+    private interactionHandler: Interactionhandler = new Interactionhandler(this);
 
     public config = config;
 
@@ -39,6 +42,7 @@ export default class BotClient extends Client {
         this.commandHandler.loadCommands();
         this.commandHandler.registerCommands();
         this.eventHandler.loadEvents();
+        this.interactionHandler.loadSelectMenus();
         await this.connectDatabase();
     }
 
