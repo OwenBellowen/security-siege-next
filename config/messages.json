@@ -32,6 +32,42 @@
             "unableToKick": "I am unable to kick **{USER}**.",
             "unableToKickOwner": "I am unable to kick the server owner.",
             "error": "An error occurred while trying to kick **{USER}**."
+        },
+        "warn": {
+            "add": {
+                "invalidUser": "Please provide a valid user to warn.\nExpected a mention or a user ID.\nGot: **{USER}**.",
+                "success": {
+                    "title": "User Warned",
+                    "description": "Successfully warned **{USER}**.\nReason: {REASON}",
+                    "dm": "You have been warned in **{GUILD}**. Reason: {REASON}",
+                    "footer": "Warned by {MODERATOR}"
+                },
+                "highestRole": "You cannot warn **{USER}** because they have a higher role than you.",
+                "selfWarn": "You cannot warn yourself.",
+                "error": "An error occurred while trying to warn **{USER}**."
+            },
+            "remove": {
+                "invalidUser": "Please provide a valid user to unwarn.\nExpected a mention or a user ID.\nGot: **{USER}**.",
+                "success": {
+                    "title": "User Unwarned",
+                    "description": "Successfully unwarned **{USER}**.",
+                    "dm": "You have been unwarned in **{GUILD}**.",
+                    "footer": "Unwarned by {MODERATOR}"
+                },
+                "noWarn": {
+                    "title": "No Warnings",
+                    "description": "No warnings found for **{USER}**."
+                },
+                "highestRole": "You cannot unwarn **{USER}** because they have a higher role than you.",
+                "selfUnwarn": "You cannot unwarn yourself.",
+                "error": "An error occurred while trying to unwarn **{USER}**."
+            },
+            "list": {
+                "invalidUser": "Please provide a valid user to list warnings for.\nExpected a mention or a user ID.\nGot: **{USER}**.",
+                "noWarnings": "No warnings found for **{USER}**.",
+                "warnings": "Warnings for **{USER}**",
+                "footer": "Requested by {REQUESTER}"
+            }
         }
     }
 }
