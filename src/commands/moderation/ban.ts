@@ -77,7 +77,7 @@ export default <BaseCommand>{
                 .setTimestamp()
 
             if (reason) {
-                embed.setDescription(moderation.ban.success.reason.description.replace("{REASON}", reason));
+                embed.setDescription(moderation.ban.success.description.replace("{REASON}", reason));
 
                 await user.ban({ reason: reason });
                 await interaction.reply({ embeds: [embed] });
@@ -89,7 +89,7 @@ export default <BaseCommand>{
                     Logger.error("Failed to send DM to user.");
                 }
             } else {
-                embed.setDescription(moderation.ban.success.noReason.description);
+                embed.setDescription(moderation.ban.success.description.replace("{REASON}", "No reason provided."));
 
                 await user.ban();
                 await interaction.reply({ embeds: [embed] });
