@@ -1,8 +1,10 @@
 import { Client, Collection, IntentsBitField } from "discord.js";
 import { BaseCommand, BaseEvent } from "../interfaces";
+import { connect } from "mongoose";
 
 import CommandHandler from "./CommandHandler";
 import EventHandler from "./EventHandler";
+import Logger from "../features/Logger";
 
 import "dotenv/config";
 import config from "../../config/config.json";
@@ -37,5 +39,17 @@ export default class BotClient extends Client {
         this.commandHandler.loadCommands();
         this.commandHandler.registerCommands();
         this.eventHandler.loadEvents();
+        await this.connectDatabase();
+    }
+
+    private async connectDatabase(): Promise<void> {
+        await connect(this.config.mongoURI, {
+            dbName: "security-siege"
+        })
+            .then(() => Logger.success("Connected to the database."))
+            .catch(error => {
+                Logger.error("An error occurred while connecting to the database.");
+                console.error(error);
+            });
     }
 }
