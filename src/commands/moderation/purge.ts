@@ -3,7 +3,8 @@ import {
     SlashCommandBuilder,
     TextChannel,
     EmbedBuilder,
-    CommandInteractionOptionResolver
+    CommandInteractionOptionResolver,
+    PermissionFlagsBits
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 import Logger from "../../features/Logger";
@@ -33,7 +34,8 @@ export default <BaseCommand>{
                 .setRequired(false)
                 .addChoices(PurgeType),
         )
-        .setDefaultMemberPermissions("ManageMessages"),
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+        .setDMPermission(false),
     config: {
         category: "moderation",
         usage: "<amount> [type]",

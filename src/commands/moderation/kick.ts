@@ -3,7 +3,8 @@ import {
     SlashCommandBuilder,
     GuildMember,
     CommandInteractionOptionResolver,
-    EmbedBuilder
+    EmbedBuilder,
+    PermissionFlagsBits
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 import Logger from "../../features/Logger";
@@ -20,7 +21,9 @@ export default <BaseCommand>{
         .addStringOption(option =>
             option.setName("reason")
                 .setDescription("The reason for kicking the user.")
-                .setRequired(false)),
+                .setRequired(false))
+        .setDMPermission(false)
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
     config: {
         category: "moderation",
         usage: "<user> [reason]",

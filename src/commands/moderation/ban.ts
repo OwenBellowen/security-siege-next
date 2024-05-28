@@ -3,7 +3,8 @@ import {
     SlashCommandBuilder,
     GuildMember,
     CommandInteractionOptionResolver,
-    EmbedBuilder
+    EmbedBuilder,
+    PermissionFlagsBits
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 import Logger from "../../features/Logger";
@@ -25,7 +26,8 @@ export default <BaseCommand>{
                 .setDescription("The reason for banning the user.")
                 .setRequired(false)
         )
-        .setDefaultMemberPermissions("BanMembers"),
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .setDMPermission(false),
     config: {
         category: "moderation",
         usage: "<user> [reason]",

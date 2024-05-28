@@ -44,7 +44,8 @@ export default <BaseCommand>{
                         .setRequired(true)
                         .setAutocomplete(true)
                 )
-        ),
+        )
+        .setDMPermission(false),
     config: {
         category: "info",
         usage: "/help",

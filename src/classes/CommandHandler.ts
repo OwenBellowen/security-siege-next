@@ -28,10 +28,7 @@ export default class CommandHandler {
 
         const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
-        const commands = this.client.commands.map(command => {
-            (command.data as SlashCommandBuilder).setDMPermission(false);
-            return command.data.toJSON();
-        });
+        const commands = this.client.commands.map(command => command.data.toJSON());
         try {
             Logger.info("Started registering application commands.");
 
