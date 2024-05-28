@@ -8,14 +8,8 @@
         "ban": {
             "invalidUser": "Please provide a valid user to ban.\nExpected a mention or a user ID.\nGot: **{USER}**.",
             "success": {
-                "noReason": {
-                    "title": "User Banned",
-                    "description": "Successfully banned **{USER}**."
-                },
-                "reason": {
-                    "title": "User Banned",
-                    "description": "Successfully banned **{USER}**.\nReason: {REASON}"
-                },
+                "title": "User Banned",
+                "description": "Successfully banned **{USER}**.\nReason: {REASON}",
                 "dm": "You have been banned from **{GUILD}**. Reason: {REASON}",
                 "footer": "Banned by {MODERATOR}"
             },
@@ -24,6 +18,20 @@
             "unableToBan": "I am unable to ban **{USER}**.",
             "unableToBanOwner": "I am unable to ban the server owner.",
             "error": "An error occurred while trying to ban **{USER}**."
+        },
+        "kick": {
+            "invalidUser": "Please provide a valid user to kick.\nExpected a mention or a user ID.\nGot: **{USER}**.",
+            "success": {
+                "title": "User Kicked",
+                "description": "Successfully kicked **{USER}**.\nReason: {REASON}",
+                "dm": "You have been kicked from **{GUILD}**. Reason: {REASON}",
+                "footer": "Kicked by {MODERATOR}"
+            },
+            "highestRole": "You cannot kick **{USER}** because they have a higher role than you.",
+            "selfKick": "You cannot kick yourself.",
+            "unableToKick": "I am unable to kick **{USER}**.",
+            "unableToKickOwner": "I am unable to kick the server owner.",
+            "error": "An error occurred while trying to kick **{USER}**."
         }
     }
 }
