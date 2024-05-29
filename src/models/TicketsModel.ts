@@ -1,4 +1,4 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 export interface ITicketCategoryQuestion {
     id: string;
@@ -25,10 +25,20 @@ export interface ITicketCategory {
 
 export interface ITicketEmbed {
     guildID: string;
+    categoryID: string; // The category ID where the embed is sent
     channelID: string; // The channel ID where the embed is sent
     title: string;
     description: string;
+    startEmbed: boolean | false;
     categories?: ITicketCategory[];
+}
+
+export interface ITicket {
+    guildID: string;
+    channelID: string;
+    userID: string;
+    claimedBy: string;
+    category: string;
 }
 
 export interface ITicketLogs {
@@ -38,10 +48,20 @@ export interface ITicketLogs {
 
 export const TicketEmbedSchema = new Schema({
     guildID: { type: String, required: true },
+    categoryID: { type: String, required: true },
     channelID: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
+    startEmbed: { type: Boolean, required: false, default: false },
     categories: { type: Array<ITicketCategory>, required: false, default: [] }
+});
+
+export const TicketSchema = new Schema({
+    guildID: { type: String, required: true },
+    channelID: { type: String, required: true },
+    userID: { type: String, required: true },
+    claimedBy: { type: String, required: false },
+    category: { type: String, required: true }
 });
 
 export const TicketLogsSchema = new Schema({
@@ -50,4 +70,5 @@ export const TicketLogsSchema = new Schema({
 });
 
 export const TicketEmbedModel = model<ITicketEmbed>('TicketEmbed', TicketEmbedSchema);
+export const TicketModel = model<ITicket>('Ticket', TicketSchema);
 export const TicketLogsModel = model<ITicketLogs>('TicketLogs', TicketLogsSchema);

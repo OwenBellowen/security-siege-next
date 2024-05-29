@@ -53,6 +53,15 @@ export default <BaseCommand>{
             .setMinLength(1)
             .setMaxLength(1000);
 
+        const category = new TextInputBuilder()
+            .setCustomId('category')
+            .setPlaceholder('Enter the category ID for the ticket embed')
+            .setLabel('Category ID')
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+            .setMinLength(1)
+            .setMaxLength(100);
+
         const channel = new TextInputBuilder()
             .setCustomId('channel')
             .setPlaceholder('Enter the channel ID where the embed will be sent')
@@ -64,12 +73,13 @@ export default <BaseCommand>{
 
         const titleRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(title),
             descriptionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(description),
+            categoryRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(category),
             channelRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(channel);
 
         const modal = new ModalBuilder()
             .setTitle('Ticket System Setup')
             .setCustomId('ticket-setup')
-            .addComponents(titleRow, descriptionRow, channelRow);
+            .addComponents(titleRow, descriptionRow, categoryRow, channelRow);
 
         return await interaction.showModal(modal);
     }

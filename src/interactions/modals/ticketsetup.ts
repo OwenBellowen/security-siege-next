@@ -10,6 +10,7 @@ export default <BaseModal> {
     async execute(interaction: ModalSubmitInteraction) {
         const title = interaction.fields.getTextInputValue("title");
         const description = interaction.fields.getTextInputValue("description");
+        const categoryID = interaction.fields.getTextInputValue("category");
         const channelID = interaction.fields.getTextInputValue("channel");
 
         if (!title || !description) {
@@ -21,6 +22,7 @@ export default <BaseModal> {
 
         const ticket = await Ticket.createEmbed({
             guildID: interaction.guildId as string,
+            categoryID,
             channelID,
             title,
             description,
