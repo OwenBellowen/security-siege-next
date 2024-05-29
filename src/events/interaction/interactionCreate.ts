@@ -1,6 +1,6 @@
 import { BaseEvent } from "../../interfaces";
 import BotClient from "../../classes/Client";
-import { CommandInteraction, AutocompleteInteraction, StringSelectMenuInteraction } from "discord.js";
+import { CommandInteraction, AutocompleteInteraction, StringSelectMenuInteraction, ModalSubmitInteraction } from "discord.js";
 import Logger from "../../features/Logger";
 
 export default <BaseEvent>{
@@ -42,6 +42,18 @@ export default <BaseEvent>{
 
             try {
                 await selectMenu.execute(interaction);
+            } catch (error) {
+                Logger.error(error as string);
+            }
+        }
+
+        if (interaction.isModalSubmit()) {
+            const modal = client.modals.get((interaction as ModalSubmitInteraction).customId);
+
+            if (!modal) return;
+
+            try {
+                await modal.execute(interaction);
             } catch (error) {
                 Logger.error(error as string);
             }

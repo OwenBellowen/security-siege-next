@@ -9,7 +9,8 @@ import {
     AutocompleteInteraction,
     SlashCommandOptionsOnlyBuilder,
     SlashCommandSubcommandsOnlyBuilder,
-    StringSelectMenuInteraction
+    StringSelectMenuInteraction,
+    ModalSubmitInteraction
 } from "discord.js";
 import BotClient from "../classes/Client";
 
@@ -26,8 +27,8 @@ export interface BaseCommand {
     data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">
         | Omit<SlashCommandSubcommandBuilder, "addSubcommand" | "addSubcommandGroup">
         | Omit<SlashCommandSubcommandGroupBuilder, "addSubcommand" | "addSubcommandGroup">
-        | SlashCommandOptionsOnlyBuilder
-        | SlashCommandSubcommandsOnlyBuilder;
+        | Omit<SlashCommandOptionsOnlyBuilder, "addSubcommand" | "addSubcommandGroup">
+        | Omit<SlashCommandSubcommandsOnlyBuilder, "addSubcommand" | "addSubcommandGroup">;
     config: CommandConfig;
     execute: (interaction: CommandInteraction) => Awaitable<unknown>;
     autocomplete?: (interaction: AutocompleteInteraction) => Awaitable<unknown>;
@@ -42,4 +43,9 @@ export interface BaseEvent {
 export interface BaseSelectMenu {
     customId: string;
     execute: (interaction: StringSelectMenuInteraction) => Awaitable<unknown>;
+}
+
+export interface BaseModal {
+    customId: string;
+    execute: (interaction: ModalSubmitInteraction) => Awaitable<unknown>;
 }
