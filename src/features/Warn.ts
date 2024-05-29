@@ -1,7 +1,6 @@
 import WarnsModel, { Warns } from "../models/WarnsModel";
 import Utility from "../classes/Utility";
-import { time, EmbedBuilder, RestOrArray, APIEmbedField } from "discord.js";
-import BotClient from "../classes/Client";
+import { time } from "discord.js";
 
 export default class Warn {
     public static async warn(

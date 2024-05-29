@@ -1,6 +1,6 @@
 {
   "name": "security-siege-next",
-  "version": "1.3.4",
+  "version": "1.4.4",
   "description": "A rewrite of my Discord bot - Security Siege",
   "main": "src/index.ts",
   "scripts": {
