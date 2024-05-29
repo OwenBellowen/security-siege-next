@@ -118,12 +118,12 @@ export default <BaseCommand>{
                     },
                     {
                         name: "Usage",
-                        value: `\`${command.config.usage}\`` || "No usage provided.",
+                        value: `\`${command.data.name} ${command.config.usage}\``,
                         inline: false
                     },
                     {
                         name: "Examples",
-                        value: `${command.config.examples.length ? command.config.examples.map(example => `\`${example}\``).join(", ") : "No examples provided."}`,
+                        value: `${command.config.examples.length ? command.config.examples.map(example => `\`${command.data.name} ${example}\``).join("\n") : "No examples provided."}`,
                         inline: false
                     }
                 ])
@@ -173,6 +173,8 @@ export default <BaseCommand>{
             const focused = interaction.options.getFocused();
             const filtered = commands.filter(c => c.startsWith(focused));
 
+            if (focused === "") return interaction.respond(commands.map((c) => ({ name: c, value: c })));
+
             await interaction.respond(
                 filtered.map((c) => ({ name: c, value: c }))
             )
@@ -185,6 +187,8 @@ export default <BaseCommand>{
 
             const focused = interaction.options.getFocused();
             const filtered = categories.filter(c => c.startsWith(focused));
+
+            if (focused === "") return interaction.respond(categories.map((c) => ({ name: c, value: c })));
 
             await interaction.respond(
                 filtered.map((c) => ({ name: c, value: c }))
