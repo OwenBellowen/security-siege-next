@@ -16,9 +16,19 @@ This is a rewrite of my Discord bot, Security Siege. It is a bot that is designe
 3. Create a `.env` file in the root directory and add the following:
 
 ```
-TOKEN=YOUR_DIS
+TOKEN=YOUR_DISCORD_BOT_TOKEN
 ```
-4. Run `npm start`
+
+4. Create a `config.json` file in the `src` directory and add the following:
+
+```json
+{
+    "guildID": "",
+    "mongoURI": "",
+    "owners": []
+}
+```
+5. Run `npm start`
 
 ## TODO
 
@@ -32,6 +42,8 @@ TOKEN=YOUR_DIS
 - [x] Added basic event handlers
 - [x] Added basic error handler
 - [x] Added basic interaction handler
+- [x] Added basic database handler
+- [x] Warning system
 
 ## Contributing
 
