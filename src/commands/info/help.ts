@@ -150,7 +150,7 @@ export default <BaseCommand>{
                 .setDescription(`Here are the commands in the ${category} category.`)
                 .addFields(commands.map(command => ({
                     name: command.data.name,
-                    value: command.data.description,
+                    value: `\`${command.data.description}\``,
                     inline: true
                 }))
                     .sort((a, b) => a.name.localeCompare(b.name))
@@ -163,36 +163,45 @@ export default <BaseCommand>{
 
     async autocomplete(interaction: AutocompleteInteraction) {
         const options = interaction.options as CommandInteractionOptionResolver,
+            subcommand = options.getSubcommand(),
             command = options.getString("command"),
             category = options.getString("category"),
             client = interaction.client as BotClient;
 
-        if (command) {
-            const commands = client.commands.map((c) => c.data.name);
-
-            const focused = interaction.options.getFocused();
-            const filtered = commands.filter(c => c.startsWith(focused));
-
-            if (focused === "") return interaction.respond(commands.map((c) => ({ name: c, value: c })));
-
-            await interaction.respond(
-                filtered.map((c) => ({ name: c, value: c }))
-            )
+        if (subcommand === "command") {
+            if (command) {
+                const commands = client.commands.map((c) => c.data.name);
+    
+                const focused = interaction.options.getFocused();
+                const filtered = commands.filter(c => c.startsWith(focused));
+    
+                if (focused === "") return interaction.respond(commands.map((c) => ({ name: c, value: c })));
+    
+                await interaction.respond(
+                    filtered.map((c) => ({ name: c, value: c }))
+                )
+            } else {
+                const commands = client.commands.map((c) => c.data.name);
+                await interaction.respond(commands.map((c) => ({ name: c, value: c })));
+            }
         }
 
-        if (category) {
-            const categories = [...new Set(
-                client.commands.map((c) => c.config.category)
-            )]
+        if (subcommand === "category") {
+            if (category) {
+                const categories = [...new Set(client.commands.map(command => command.config.category))];
 
-            const focused = interaction.options.getFocused();
-            const filtered = categories.filter(c => c.startsWith(focused));
+                const focused = interaction.options.getFocused();
+                const filtered = categories.filter(c => c.startsWith(focused));
 
-            if (focused === "") return interaction.respond(categories.map((c) => ({ name: c, value: c })));
+                if (focused === "") return interaction.respond(categories.map((c) => ({ name: c, value: c })));
 
-            await interaction.respond(
-                filtered.map((c) => ({ name: c, value: c }))
-            )
+                await interaction.respond(
+                    filtered.map((c) => ({ name: c, value: c }))
+                );
+            } else {
+                const categories = [...new Set(client.commands.map(command => command.config.category))];
+                await interaction.respond(categories.map((c) => ({ name: c, value: c })));
+            }
         }
     }
 };
