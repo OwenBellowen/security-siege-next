@@ -10,7 +10,7 @@ import {
 import { BaseCommand } from '../../interfaces';
 import { TicketLogsModel } from '../../models/TicketsModel';
 
-export default <BaseCommand> <unknown> {
+export default <BaseCommand>{
     data: new SlashCommandBuilder()
         .setName('setticketlogschannel')
         .setDescription('Set the ticket logs channel for the server')

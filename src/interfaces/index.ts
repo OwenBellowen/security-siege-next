@@ -15,7 +15,7 @@ import {
 } from "discord.js";
 import BotClient from "../classes/Client";
 
-type CategoryType = "admin" | "misc" | "moderation" | "utility" | "dev" | "info";
+type CategoryType = "admin" | "misc" | "moderation" | "utility" | "dev" | "info" | "ticket";
 
 interface CommandConfig {
     category: CategoryType;

@@ -24,6 +24,7 @@ export default <BaseModal> {
             channelID,
             title,
             description,
+            startEmbed: false,
             categories: []
         });
 

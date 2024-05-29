@@ -13,7 +13,7 @@ import { BaseCommand } from '../../interfaces';
 import Ticket from '../../features/Ticket';
 import BotClient from '../../classes/Client';
 
-export default <BaseCommand><unknown>{
+export default <BaseCommand>{
     data: new SlashCommandBuilder()
         .setName('addcategory')
         .setDescription('Add a category to the ticket system')

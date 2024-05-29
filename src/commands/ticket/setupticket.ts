@@ -11,7 +11,7 @@ import {
 import { BaseCommand } from '../../interfaces';
 import Ticket from '../../features/Ticket';
 
-export default <BaseCommand><unknown>{
+export default <BaseCommand>{
     data: new SlashCommandBuilder()
         .setName('setupticket')
         .setDescription('Set up the ticket system for the server')
