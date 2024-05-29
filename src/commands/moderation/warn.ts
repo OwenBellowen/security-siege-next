@@ -6,13 +6,15 @@ import {
     EmbedBuilder,
     PermissionFlagsBits,
     APIEmbedField,
-    RestOrArray
+    RestOrArray,
+    ActionRowBuilder,
+    StringSelectMenuBuilder,
+    StringSelectMenuOptionBuilder
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 import Logger from "../../features/Logger";
 import { moderation } from "../../../config/messages.json";
 import Warn from "../../features/Warn";
-import BotClient from "../../classes/Client";
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
@@ -71,7 +73,7 @@ export default <BaseCommand>{
         examples: [
             "warn add @user#0001 spamming",
             "warn remove @user#0001 1234567890",
-            "warn get @user#0001"
+            "warn list @user#0001"
         ],
         permissions: ["KickMembers"],
     },
@@ -108,7 +110,7 @@ export default <BaseCommand>{
         }
 
         if (subcommand === "remove") {
-            const warn = await Warn.removeWarn(interaction.guild.id, member.id, warnID);
+            const warn = await Warn.removeWarn(warnID);
 
             if (!warn) {
                 const embed = new EmbedBuilder()
@@ -148,24 +150,40 @@ export default <BaseCommand>{
                     .setColor("Red");
 
                 return await interaction.reply({ embeds: [embed] });
+            } else {
+                try {
+                    const selectMenu = new StringSelectMenuBuilder()
+                        .setCustomId("warns")
+                        .setPlaceholder("Select a warn to remove.")
+                        .addOptions(warns.warns.map(warn => new StringSelectMenuOptionBuilder()
+                            .setLabel(`Warn ID: ${warn.id}`)
+                            .setDescription(`Reason: ${warn.reason}`)
+                            .setValue(warn.id)
+                        ));
+
+                    const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
+                        .addComponents(selectMenu);
+
+                    const fields: RestOrArray<APIEmbedField> = warns.warns.map(warn => ({
+                        name: `Warn ID: ${warn.id}`,
+                        value: `Moderator: <@${warn.moderator}>\nReason: \`${warn.reason}\`\nTimestamp: ${warn.timestamp}`
+                    }));
+
+                    const embed = new EmbedBuilder()
+                        .setTitle(moderation.warn.list.warnings.replace("{USER}", `\`${member.user.username}\``))
+                        .setColor("Aqua")
+                        .addFields(fields)
+                        .setFooter({
+                            text: moderation.warn.list.footer.replace("{REQUESTER}", interaction.user.username),
+                            iconURL: interaction.user.displayAvatarURL()
+                        })
+                        .setTimestamp();
+
+                    await interaction.reply({ embeds: [embed], components: [actionRow] });
+                } catch (error) {
+                    Logger.error(`An error occurred while listing the warns of ${member.user.username}. Error: ${(error as Error).message}`);
+                }
             }
-
-            const fields: RestOrArray<APIEmbedField> = warns.warns.map(warn => ({
-                name: `Warn ID: ${warn.id}`,
-                value: `Moderator: <@${warn.moderator}>\nReason: \`${warn.reason}\`\nTimestamp: ${warn.timestamp}`
-            }));
-
-            const embed = new EmbedBuilder()
-                .setTitle(moderation.warn.list.warnings.replace("{USER}", `\`${member.user.username}\``))
-                .setColor("Aqua")
-                .addFields(fields)
-                .setFooter({
-                    text: moderation.warn.list.footer.replace("{REQUESTER}", interaction.user.username),
-                    iconURL: interaction.user.displayAvatarURL()
-                })
-                .setTimestamp();
-
-            await interaction.reply({ embeds: [embed] });
         }
     }
 }

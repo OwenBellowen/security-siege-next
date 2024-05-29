@@ -38,19 +38,20 @@ export default class Warn {
     }
 
     public static async removeWarn(
-        guildID: string,
-        userID: string,
         warnID: string
     ): Promise<Warns | null> {
-        const warn = await WarnsModel.findOne({ guildID, userID });
+        const warn = await WarnsModel.findOne({ "warns.id": warnID });
 
         if (!warn) return null;
 
-        const index = warn.warns.findIndex(warn => warn.id === warnID);
+        const warnIndex = warn.warns.findIndex(warn => warn.id === warnID);
 
-        if (index === -1) return null;
+        warn.warns.splice(warnIndex, 1);
 
-        warn.warns.splice(index, 1);
+        if (warn.warns.length === 0) {
+            await WarnsModel.deleteOne({ _id: warn._id });
+            return null;
+        }
 
         return await warn.save();
     }
