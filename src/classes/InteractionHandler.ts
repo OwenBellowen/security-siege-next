@@ -1,6 +1,6 @@
 import { readdirSync } from "fs";
 import { join } from "path";
-import { BaseSelectMenu, BaseModal } from "../interfaces";
+import { BaseSelectMenu, BaseModal, BaseButton } from "../interfaces";
 import BotClient from "./Client";
 import Logger from "../features/Logger";
 
@@ -27,5 +27,16 @@ export default class Interactionhandler {
         }
 
         Logger.success("Modals loaded.");
+    }
+
+    public loadButtons(): void {
+        const buttons = readdirSync(join(__dirname, "..", "interactions", "buttons")).filter(file => file.endsWith(".ts"));
+
+        for (const file of buttons) {
+            const button = require(join(__dirname, "..", "interactions", "buttons", file)).default as BaseButton;
+            this.client.buttons.set(button.customId, button);
+        }
+
+        Logger.success("Buttons loaded.");
     }
 }

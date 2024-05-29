@@ -1,5 +1,5 @@
 import { Client, Collection, IntentsBitField } from "discord.js";
-import { BaseCommand, BaseEvent, BaseSelectMenu, BaseModal } from "../interfaces";
+import { BaseCommand, BaseEvent, BaseSelectMenu, BaseModal, BaseButton } from "../interfaces";
 import { connect } from "mongoose";
 
 import CommandHandler from "./CommandHandler";
@@ -15,6 +15,7 @@ export default class BotClient extends Client {
     public events: Collection<string, BaseEvent> = new Collection();
     public selectMenus: Collection<string, BaseSelectMenu> = new Collection();
     public modals: Collection<string, BaseModal> = new Collection();
+    public buttons: Collection<string, BaseButton> = new Collection();
 
     public ticketCache: Collection<string, string> = new Collection();
 
@@ -51,6 +52,7 @@ export default class BotClient extends Client {
         // Load interactions
         this.interactionHandler.loadSelectMenus();
         this.interactionHandler.loadModals();
+        this.interactionHandler.loadButtons();
 
         // Connect to the database
         await this.connectDatabase();

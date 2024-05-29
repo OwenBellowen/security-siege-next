@@ -10,7 +10,8 @@ import {
     SlashCommandOptionsOnlyBuilder,
     SlashCommandSubcommandsOnlyBuilder,
     StringSelectMenuInteraction,
-    ModalSubmitInteraction
+    ModalSubmitInteraction,
+    ButtonInteraction
 } from "discord.js";
 import BotClient from "../classes/Client";
 
@@ -48,4 +49,9 @@ export interface BaseSelectMenu {
 export interface BaseModal {
     customId: string;
     execute: (interaction: ModalSubmitInteraction) => Awaitable<unknown>;
+}
+
+export interface BaseButton {
+    customId: string;
+    execute: (interaction: ButtonInteraction) => Awaitable<unknown>;
 }
