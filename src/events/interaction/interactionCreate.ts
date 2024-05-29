@@ -1,6 +1,6 @@
 import { BaseEvent } from "../../interfaces";
 import BotClient from "../../classes/Client";
-import { CommandInteraction, AutocompleteInteraction } from "discord.js";
+import { CommandInteraction, AutocompleteInteraction, StringSelectMenuInteraction } from "discord.js";
 import Logger from "../../features/Logger";
 
 export default <BaseEvent>{
@@ -30,6 +30,18 @@ export default <BaseEvent>{
 
             try {
                 await command.autocomplete(interaction);
+            } catch (error) {
+                Logger.error(error as string);
+            }
+        }
+
+        if (interaction.isStringSelectMenu()) {
+            const selectMenu = client.selectMenus.get((interaction as StringSelectMenuInteraction).customId);
+
+            if (!selectMenu) return;
+
+            try {
+                await selectMenu.execute(interaction);
             } catch (error) {
                 Logger.error(error as string);
             }
