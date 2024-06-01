@@ -157,6 +157,10 @@ export default <BaseCommand>{
                 )
                 .setColor("Aqua");
 
+            if (category === "Ticket") {
+                embed.setDescription("The ticket system is a way for users to create tickets for support. The commands in this category are used to set up and manage the ticket system. Please note that some commands use modals, so be sure to copy some information before proceeding.")
+            }
+
             await interaction.reply({ embeds: [embed] });
         }
     },
