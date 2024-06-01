@@ -6,25 +6,44 @@ import {
     ModalActionRowComponentBuilder,
     ModalBuilder,
     TextInputBuilder,
-    TextInputStyle
+    TextInputStyle,
+    CommandInteractionOptionResolver,
+    TextChannel
 } from 'discord.js';
 import { BaseCommand } from '../../interfaces';
 import Ticket from '../../features/Ticket';
+import BotClient from '../../classes/Client';
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
         .setName('setupticket')
         .setDescription('Set up the ticket system for the server')
+        .addChannelOption(option =>
+            option.setName('channel')
+                .setDescription('The channel to set up the ticket system in (Make sure the category is set up)')
+                .setRequired(false)
+        )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: 'ticket',
-        usage: '',
-        examples: [],
+        usage: '[channel]',
+        examples: [
+            '#setupticket',
+        ],
         permissions: ['Administrator', 'ManageMessages']
     },
     async execute(interaction: CommandInteraction) {
         if (!interaction.guild) return;
+
+        const channel = (interaction.options as CommandInteractionOptionResolver).getChannel('channel') as TextChannel || interaction.channel as TextChannel;
+
+        if (!channel.parentId) {
+            return interaction.reply({
+                content: 'The channel must be in a category',
+                ephemeral: true
+            });
+        }
 
         const embed = await Ticket.getEmbed(interaction.guildId as string);
 
@@ -53,33 +72,16 @@ export default <BaseCommand>{
             .setMinLength(1)
             .setMaxLength(1000);
 
-        const category = new TextInputBuilder()
-            .setCustomId('category')
-            .setPlaceholder('Enter the category ID for the ticket embed')
-            .setLabel('Category ID')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true)
-            .setMinLength(1)
-            .setMaxLength(100);
-
-        const channel = new TextInputBuilder()
-            .setCustomId('channel')
-            .setPlaceholder('Enter the channel ID where the embed will be sent')
-            .setLabel('Channel ID')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true)
-            .setMinLength(1)
-            .setMaxLength(100);
-
         const titleRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(title),
-            descriptionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(description),
-            categoryRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(category),
-            channelRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(channel);
+            descriptionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(description)
 
         const modal = new ModalBuilder()
             .setTitle('Ticket System Setup')
             .setCustomId('ticket-setup')
-            .addComponents(titleRow, descriptionRow, categoryRow, channelRow);
+            .addComponents(titleRow, descriptionRow);
+
+        await (interaction.client as BotClient).ticketCache.set(`${interaction.user.id}-channel`, channel.id);
+        await (interaction.client as BotClient).ticketCache.set(`${interaction.user.id}-category`, channel.parentId);
 
         return await interaction.showModal(modal);
     }

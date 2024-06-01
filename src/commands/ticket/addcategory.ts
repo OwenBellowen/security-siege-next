@@ -23,13 +23,20 @@ export default <BaseCommand>{
                 .setDescription('Enter the code name of the category. (Tip: Use a unique name without spaces)')
                 .setRequired(true)
         )
+        .addStringOption(option =>
+            option
+                .setName('staffroles')
+                .setDescription('The staff roles that can view the category. (Tip: Use role IDs separated by a comma)')
+                .setRequired(true)
+        )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: 'ticket',
-        usage: '<codename>',
+        usage: '<codename> <staffroles>',
         examples: [
-            'support'
+            'support 1234567890,0987654321',
+            'help 1234567890'
         ],
         permissions: ['Administrator', 'ManageMessages']
     },
@@ -81,28 +88,18 @@ export default <BaseCommand>{
             .setMinLength(1)
             .setMaxLength(100);
 
-        const staffRoles = new TextInputBuilder()
-            .setCustomId('staffRoles')
-            .setPlaceholder('Enter the staff roles IDs for the category. (Tip: You can use multiple roles separated by a comma)')
-            .setLabel('Staff Roles')
-            .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true)
-            .setMinLength(1)
-            .setMaxLength(100);
-
         const nameRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(name),
             descriptionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(description),
             emojiRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(emoji),
-            ticketNameRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(ticketName),
-            staffRolesRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(staffRoles);
+            ticketNameRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(ticketName);
 
         const modal = new ModalBuilder()
             .setTitle('Add Category')
             .setCustomId('add-category')
-            .addComponents(nameRow, descriptionRow, emojiRow, ticketNameRow, staffRolesRow);
+            .addComponents(nameRow, descriptionRow, emojiRow, ticketNameRow);
 
         (interaction.client as BotClient).ticketCache.set('codeName', (interaction.options as CommandInteractionOptionResolver).getString('codename') as string);
-
+        (interaction.client as BotClient).ticketCache.set('staffRoles', (interaction.options as CommandInteractionOptionResolver).getString('staffroles') as string);
         return await interaction.showModal(modal);
     }
 };

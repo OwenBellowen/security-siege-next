@@ -11,7 +11,7 @@ export default <BaseModal> {
     customId: "add-category",
     async execute(interaction: ModalSubmitInteraction) {
         const codeName = (interaction.client as BotClient).ticketCache.get("codeName"),
-            staffRoles = interaction.fields.getTextInputValue("staffRoles"),
+            staffRoles = (interaction.client as BotClient).ticketCache.get("staffRoles") as string,
             name = interaction.fields.getTextInputValue("name"),
             description = interaction.fields.getTextInputValue("description"),
             emoji = interaction.fields.getTextInputValue("emoji"),

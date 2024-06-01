@@ -4,14 +4,15 @@ import {
 } from "discord.js";
 import { BaseModal } from "../../interfaces";
 import Ticket from "../../features/Ticket";
+import BotClient from "../../classes/Client";
 
 export default <BaseModal> {
     customId: "ticket-setup",
     async execute(interaction: ModalSubmitInteraction) {
         const title = interaction.fields.getTextInputValue("title");
         const description = interaction.fields.getTextInputValue("description");
-        const categoryID = interaction.fields.getTextInputValue("category");
-        const channelID = interaction.fields.getTextInputValue("channel");
+        const channelID = (interaction.client as BotClient).ticketCache.get(`${interaction.user.id}-channel`) as string;
+        const categoryID = (interaction.client as BotClient).ticketCache.get(`${interaction.user.id}-category`) as string;
 
         if (!title || !description) {
             return interaction.reply({
