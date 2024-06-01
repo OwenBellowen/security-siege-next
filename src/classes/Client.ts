@@ -1,7 +1,6 @@
 import { Client, Collection, IntentsBitField } from "discord.js";
 import { BaseCommand, BaseEvent, BaseSelectMenu, BaseModal, BaseButton } from "../interfaces";
 import { connect } from "mongoose";
-import { createClient } from "redis";
 
 import CommandHandler from "./CommandHandler";
 import EventHandler from "./EventHandler";
@@ -25,7 +24,6 @@ export default class BotClient extends Client {
     private interactionHandler: Interactionhandler = new Interactionhandler(this);
 
     public config = config;
-    public redis = this.connectRedis();
 
     public constructor() {
         super({
@@ -58,12 +56,6 @@ export default class BotClient extends Client {
 
         // Connect to the database
         await this.connectDatabase();
-
-        // Connect to Redis
-        this.redis.then(() => Logger.success("Connected to Redis.")).catch(error => {
-            Logger.error("An error occurred while connecting to Redis.");
-            console.error(error);
-        });
     }
 
     private async connectDatabase(): Promise<void> {
@@ -75,9 +67,5 @@ export default class BotClient extends Client {
                 Logger.error("An error occurred while connecting to the database.");
                 console.error(error);
             });
-    }
-
-    private async connectRedis() {
-        return await createClient();
     }
 }
