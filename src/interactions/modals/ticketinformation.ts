@@ -3,7 +3,9 @@ import {
     EmbedBuilder,
     CategoryChannel,
     ChannelType,
-
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder
 } from 'discord.js';
 import { BaseModal } from '../../interfaces';
 import Ticket from '../../features/Ticket';
@@ -93,9 +95,22 @@ export default <BaseModal>{
             if (role) ticketChannel.permissionOverwrites.create(role, { ViewChannel: true, SendMessages: true, ReadMessageHistory: true });
         });
 
+        const claimButton = new ButtonBuilder()
+            .setCustomId('claim')
+            .setLabel('Claim Ticket')
+            .setStyle(ButtonStyle.Primary);
+
+        const closeButton = new ButtonBuilder()
+            .setCustomId('close')
+            .setLabel('Close Ticket')
+            .setStyle(ButtonStyle.Danger);
+
+        const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(claimButton, closeButton);
+
         ticketChannel.send({
             content: staffRoles.map(role => role?.toString()).join(' '),
-            embeds: [ticketEmbed]
+            embeds: [ticketEmbed],
+            components: [actionRow]
         });
 
         interaction.reply({

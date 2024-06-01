@@ -30,6 +30,7 @@ export interface ITicketEmbed {
     title: string;
     description: string;
     startEmbed: boolean | false;
+    dmUser?: boolean | false;
     categories?: ITicketCategory[];
 }
 
@@ -53,6 +54,7 @@ export const TicketEmbedSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     startEmbed: { type: Boolean, required: false, default: false },
+    dmUser: { type: Boolean, required: false, default: false },
     categories: { type: Array<ITicketCategory>, required: false, default: [] }
 });
 

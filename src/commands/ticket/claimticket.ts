@@ -57,9 +57,17 @@ export default <BaseCommand>{
             });
         }
 
+        const ticketUser = await interaction.guild.members.fetch(ticket.userID);
+
         await TicketModel.updateOne({ guildID: interaction.guildId, channelID: channel.id }, { claimedBy: interaction.user.id });
 
-        await channel.send(`Ticket has been claimed by ${interaction.user.toString()}`);
+        await channel.send(`Ticket has been claimed by ${interaction.user.toString()}! ${ticketUser.toString()} please wait for a staff member to assist you.`);
+
+        await channel.permissionOverwrites.edit(ticket.userID, {
+            ViewChannel: true,
+            SendMessages: true,
+            ReadMessageHistory: true
+        });
 
         return interaction.reply({
             content: 'Ticket has been claimed!',
