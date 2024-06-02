@@ -28,6 +28,7 @@ export default <BaseModal> {
             title,
             description,
             startEmbed: false,
+            allowedRoles: [],
             categories: []
         });
 

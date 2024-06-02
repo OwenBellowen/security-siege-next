@@ -18,7 +18,7 @@ import Logger from '../../features/Logger';
 export default <BaseModal>{
     customId: "ticket_information",
     async execute(interaction: ModalSubmitInteraction) {
-        const codeName = (interaction.client as BotClient).ticketCache.get(interaction.user.id);
+        const codeName = (interaction.client as BotClient).ticketCache.get(interaction.user.id) as string;
 
         if (!interaction.guild) return;
 
@@ -31,7 +31,7 @@ export default <BaseModal>{
             });
         }
 
-        const { categories, guildID, categoryID } = embedModel;
+        const { categories, guildID, categoryID, allowedRoles } = embedModel;
 
         if (!categories || categories.length === 0) {
             return interaction.reply({
@@ -62,13 +62,17 @@ export default <BaseModal>{
                 }
             ]
         })
-
+        
         if (!ticketChannel) {
             return interaction.reply({
                 content: 'An error occurred while creating the ticket channel',
                 ephemeral: true
             });
         }
+        
+        allowedRoles.forEach(role => {
+            ticketChannel?.permissionOverwrites.create(role, { ViewChannel: false, SendMessages: false, ReadMessageHistory: false });
+        })
 
         const staffRoles = category.staffRoles.map(roleID => interaction.guild?.roles.cache.get(roleID)) || [];
 

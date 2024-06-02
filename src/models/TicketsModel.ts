@@ -31,6 +31,7 @@ export interface ITicketEmbed {
     title: string;
     description: string;
     startEmbed: boolean | false;
+    allowedRoles: string[];
     dmUser?: boolean | false;
     categories?: ITicketCategory[];
 }
@@ -57,6 +58,7 @@ export const TicketEmbedSchema = new Schema({
     description: { type: String, required: true },
     startEmbed: { type: Boolean, required: false, default: false },
     dmUser: { type: Boolean, required: false, default: false },
+    allowedRoles: { type: Array<String>, required: false, default: [] },
     categories: { type: Array<ITicketCategory>, required: false, default: [] }
 });
 
