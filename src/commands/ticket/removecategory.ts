@@ -6,7 +6,6 @@ import {
 } from 'discord.js';
 import { BaseCommand } from '../../interfaces';
 import Ticket from '../../features/Ticket';
-import BotClient from '../../classes/Client';
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
