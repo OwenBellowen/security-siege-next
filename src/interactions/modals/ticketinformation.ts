@@ -5,12 +5,15 @@ import {
     ChannelType,
     ButtonBuilder,
     ButtonStyle,
-    ActionRowBuilder
+    ActionRowBuilder,
+    time
 } from 'discord.js';
 import { BaseModal } from '../../interfaces';
 import Ticket from '../../features/Ticket';
+import Utility from '../../classes/Utility';
 import { TicketModel } from '../../models/TicketsModel';
 import BotClient from '../../classes/Client';
+import Logger from '../../features/Logger';
 
 export default <BaseModal>{
     customId: "ticket_information",
@@ -122,9 +125,26 @@ export default <BaseModal>{
             guildID: guildID,
             channelID: ticketChannel.id,
             userID: interaction.user.id,
-            category: category.codeName
+            category: category.codeName,
+            claimedBy: '',
+            createdAt: time()
         })).save();
 
         (interaction.client as BotClient).ticketCache.delete(interaction.user.id);
+
+        const logs = await Ticket.getLogs(guildID);
+
+        if (!logs) return;
+
+        const logsChannel = await Utility.getChannel(logs.channelID, interaction.client as BotClient);
+
+        if (!logsChannel) { return; }
+        else {
+            try {
+                (interaction.client as BotClient).ticketLogger.log('ticketOpened', ticketChannel);
+            } catch (error) {
+                Logger.error(`An error occurred while logging the ticket: ${error}`);
+            }
+        }
     }
 }

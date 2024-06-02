@@ -2,6 +2,9 @@ import { BaseButton } from "../../interfaces";
 import { TicketModel } from "../../models/TicketsModel";
 import Ticket from "../../features/Ticket";
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, TextChannel } from "discord.js";
+import BotClient from "../../classes/Client";
+import Utility from "../../classes/Utility";
+import Logger from "../../features/Logger";
 
 export default <BaseButton>{
     customId: "close",
@@ -25,6 +28,8 @@ export default <BaseButton>{
                 ephemeral: true
             });
         }
+
+        const ticketChannel = await Utility.getChannel(ticket.channelID, interaction.client as BotClient);
 
         if (!ticket.claimedBy) {
             return interaction.reply({
@@ -65,9 +70,24 @@ export default <BaseButton>{
             });
         }
 
-        return interaction.reply({
+        interaction.reply({
             content: 'Ticket has been closed!',
             ephemeral: true
         });
+
+        const logs = await Ticket.getLogs(interaction.guildId as string);
+
+        if (!logs) return;
+
+        const logsChannel = await Utility.getChannel(logs.channelID, interaction.client as BotClient);
+
+        if (!logsChannel) { return; }
+        else {
+            try {
+                (interaction.client as BotClient).ticketLogger.log('ticketClosed', ticketChannel);
+            } catch (error) {
+                Logger.error(`An error occurred while logging the ticket: ${error}`);
+            }
+        }
     }
 }

@@ -4,13 +4,14 @@ import {
 } from "discord.js";
 import { TicketModel } from "../../models/TicketsModel";
 import Ticket from "../../features/Ticket";
+import BotClient from "../../classes/Client";
+import Utility from "../../classes/Utility";
+import Logger from "../../features/Logger";
 
 export default <BaseButton>{
     customId: 'delete_ticket',
     async execute(interaction: ButtonInteraction) {
         if (!interaction.guild) return;
-
-        if (!interaction.channel) return;
 
         const embedTicket = await Ticket.getEmbed(interaction.guildId as string);
 
@@ -20,8 +21,8 @@ export default <BaseButton>{
                 ephemeral: true
             });
         }
-        
-        const ticket = await TicketModel.findOne({ guildID: interaction.guildId, channelID: interaction.channel.id });
+
+        const ticket = await TicketModel.findOne({ guildID: interaction.guildId, channelID: interaction.channel?.id });
 
         if (!ticket) {
             return interaction.reply({
@@ -30,9 +31,24 @@ export default <BaseButton>{
             });
         }
 
-        await TicketModel.deleteOne({ guildID: interaction.guildId, channelID: interaction.channel.id });
+        const ticketChannel = await Utility.getChannel(ticket.channelID, interaction.client as BotClient);
 
-        await interaction.channel.delete();
+        const logs = await Ticket.getLogs(interaction.guildId as string);
+
+        if (!logs) return;
+
+        const logsChannel = await Utility.getChannel(logs.channelID, interaction.client as BotClient);
+
+        if (!logsChannel) { return; }
+        try {
+            await (interaction.client as BotClient).ticketLogger.log('ticketDeleted', ticketChannel);
+        } catch (error) {
+            Logger.error(`An error occurred while logging the ticket: ${error}`);
+        }
+
+        await TicketModel.deleteOne({ guildID: interaction.guildId, channelID: interaction.channel?.id });
+
+        await interaction.channel?.delete();
 
         if (embedTicket.dmUser) {
             const ticketUser = await interaction.guild.members.fetch(ticket.userID);

@@ -8,6 +8,9 @@ import {
 import { BaseCommand } from "../../interfaces";
 import { TicketModel } from "../../models/TicketsModel";
 import Ticket from "../../features/Ticket";
+import BotClient from '../../classes/Client';
+import Logger from '../../features/Logger';
+import Utility from "../../classes/Utility";
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
@@ -41,14 +44,16 @@ export default <BaseCommand>{
             });
         }
 
-        const ticket = await TicketModel.findOne({ guildID: interaction.guildId, channelID: channel.id });
-
+        const ticket = await TicketModel.findOne({ guildID: interaction.guildId, channelID: interaction.channelId });
+        
         if (!ticket) {
             return interaction.reply({
                 content: 'This channel is not a ticket channel or there are no tickets in this channel',
                 ephemeral: true
             });
         }
+        
+        const ticketChannel = await Utility.getChannel(ticket.channelID, interaction.client as BotClient);
 
         if (ticket.claimedBy) {
             return interaction.reply({
@@ -61,17 +66,32 @@ export default <BaseCommand>{
 
         await TicketModel.updateOne({ guildID: interaction.guildId, channelID: channel.id }, { claimedBy: interaction.user.id });
 
-        await channel.send(`Ticket has been claimed by ${interaction.user.toString()}! ${ticketUser.toString()} please wait for a staff member to assist you.`);
-
         await channel.permissionOverwrites.edit(ticket.userID, {
             ViewChannel: true,
             SendMessages: true,
             ReadMessageHistory: true
         });
 
-        return interaction.reply({
+        await channel.send(`Ticket has been claimed by ${interaction.user.toString()}! ${ticketUser.toString()} please wait for a staff member to assist you.`);
+
+        interaction.reply({
             content: 'Ticket has been claimed!',
             ephemeral: true
         });
+
+        const logs = await Ticket.getLogs(interaction.guildId as string);
+
+        if (!logs) return;
+
+        const logsChannel = await Utility.getChannel(logs.channelID, interaction.client as BotClient);
+
+        if (!logsChannel) { return; }
+        else {
+            try {
+                (interaction.client as BotClient).ticketLogger.log('ticketClaimed', ticketChannel);
+            } catch (error) {
+                Logger.error(`An error occurred while logging the ticket: ${error}`);
+            }
+        }
     }
 }
