@@ -11,22 +11,57 @@ import config from "../../config/config.json";
 import Interactionhandler from "./InteractionHandler";
 import TicketLogger from "../features/TicketLogger";
 
+/**
+ * Represents a Bot Client.
+ */
 export default class BotClient extends Client {
+    /**
+     * Collection of commands.
+     */
     public commands: Collection<string, BaseCommand> = new Collection();
+
+    /**
+     * Collection of events.
+     */
     public events: Collection<string, BaseEvent> = new Collection();
+
+    /**
+     * Collection of select menus.
+     */
     public selectMenus: Collection<string, BaseSelectMenu> = new Collection();
+
+    /**
+     * Collection of modals.
+     */
     public modals: Collection<string, BaseModal> = new Collection();
+
+    /**
+     * Collection of buttons.
+     */
     public buttons: Collection<string, BaseButton> = new Collection();
 
+    /**
+     * Collection of tickets.
+     */
     public ticketCache: Collection<string, string> = new Collection();
+
+    /**
+     * Ticket logger instance.
+     */
     public ticketLogger: TicketLogger = new TicketLogger(this);
 
     private commandHandler: CommandHandler = new CommandHandler(this);
     private eventHandler: EventHandler = new EventHandler(this);
     private interactionHandler: Interactionhandler = new Interactionhandler(this);
 
+    /**
+     * Bot configuration.
+     */
     public config = config;
 
+    /**
+     * Creates a new instance of BotClient.
+     */
     public constructor() {
         super({
             intents: [
@@ -43,6 +78,9 @@ export default class BotClient extends Client {
         });
     }
 
+    /**
+     * Starts the bot client.
+     */
     public async start(): Promise<void> {
         this.login(process.env.TOKEN);
 
@@ -60,6 +98,9 @@ export default class BotClient extends Client {
         await this.connectDatabase();
     }
 
+    /**
+     * Connects to the database.
+     */
     private async connectDatabase(): Promise<void> {
         await connect(this.config.mongoURI, {
             dbName: "security-siege"

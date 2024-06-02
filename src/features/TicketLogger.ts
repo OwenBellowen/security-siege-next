@@ -2,7 +2,8 @@ import {
     TextChannel,
     EmbedBuilder,
     User,
-    time
+    time,
+    ColorResolvable
 } from "discord.js";
 import { TicketLogsModel, TicketModel } from "../models/TicketsModel";
 import BotClient from "../classes/Client";
@@ -15,9 +16,18 @@ const botImageURLs = {
     ticketDeleted: 'https://i.imgur.com/obTW2BS.png'
 };
 
+/**
+ * Represents a TicketLogger class that handles logging ticket events.
+ */
 export default class TicketLogger {
     constructor(private client: BotClient) { }
 
+    /**
+     * Logs a ticket event.
+     * @param type - The type of the event.
+     * @param channel - The text channel where the event occurred.
+     * @returns A Promise that resolves to the result of sending the log message.
+     */
     public async log(type: LogType, channel: TextChannel) {
         const logs = await TicketLogsModel.findOne({ guildID: channel.guild.id });
         const ticket = await TicketModel.findOne({ channelID: channel.id });
@@ -40,120 +50,62 @@ export default class TicketLogger {
 
         if (!webhook) return null;
 
-        if (type === 'ticketOpened') {
-            const embed = new EmbedBuilder()
-                .setTitle('Ticket Opened')
-                .setDescription(`Ticket opened by ${user.toString()} in ${channel.toString()} at ${createdAt}`)
-                .setAuthor({
-                    name: user.username,
-                    iconURL: user.displayAvatarURL()
-                })
-                .addFields([
-                    {
-                        name: 'User ID',
-                        value: `\`${userID}\``,
-                        inline: true
-                    },
-                    {
-                        name: 'Category',
-                        value: `\`${category}\``,
-                        inline: true
-                    }
-                ])
-                .setColor('Green');
+        let title = '';
+        let description = '';
+        let color: ColorResolvable;
 
-            return webhook.send({
-                username: 'Ticket Opened',
-                embeds: [embed],
-                avatarURL: botImageURLs.ticketOpened
-            });
+        switch (type) {
+            case 'ticketOpened':
+                title = 'Ticket Opened';
+                description = `Ticket opened by ${user.toString()} in ${channel.toString()} at ${createdAt}`;
+                color = 'Green';
+                break;
+            case 'ticketClosed':
+                title = 'Ticket Closed';
+                description = `Ticket closed by ${user.toString()} in ${channel.toString()} at ${time()}`;
+                color = 'Red';
+                break;
+            case 'ticketClaimed':
+                title = 'Ticket Claimed';
+                description = `Ticket claimed by ${claimedByUser?.toString()} in ${channel.toString()} at ${time()}`;
+                color = 'Yellow';
+                break;
+            case 'ticketDeleted':
+                title = 'Ticket Deleted';
+                description = `Ticket \`${channel.name}\` was deleted by ${user.toString()} at ${time()}`;
+                color = 'Red';
+                break;
+            default:
+                return null;
         }
 
-        if (type === 'ticketClosed') {
-            const embed = new EmbedBuilder()
-                .setTitle('Ticket Closed')
-                .setDescription(`Ticket closed by ${user.toString()} in ${channel.toString()} at ${time()}`)
-                .setAuthor({
-                    name: user.username,
-                    iconURL: user.displayAvatarURL()
-                })
-                .addFields([
-                    {
-                        name: 'User ID',
-                        value: `\`${userID}\``,
-                        inline: true
-                    },
-                    {
-                        name: 'Category',
-                        value: `\`${category}\``,
-                        inline: true
-                    }
-                ])
-                .setColor('Red');
+        const embed = new EmbedBuilder()
+            .setTitle(title)
+            .setDescription(description)
+            .setAuthor({
+                name: user.username,
+                iconURL: user.displayAvatarURL()
+            })
+            .addFields([
+                {
+                    name: 'User ID',
+                    value: `\`${userID}\``,
+                    inline: true
+                },
+                {
+                    name: 'Category',
+                    value: `\`${category}\``,
+                    inline: true
+                }
+            ])
+            .setColor(color);
 
-            return webhook.send({
-                username: 'Ticket Closed',
-                embeds: [embed],
-                avatarURL: botImageURLs.ticketClosed
-            });
-        }
+        const avatarURL = botImageURLs[type];
 
-        if (type === 'ticketClaimed') {
-            const embed = new EmbedBuilder()
-                .setTitle('Ticket Claimed')
-                .setDescription(`Ticket claimed by ${claimedByUser?.toString()} in ${channel.toString()} at ${time()}`)
-                .setAuthor({
-                    name: claimedByUser?.username as string,
-                    iconURL: claimedByUser?.displayAvatarURL()
-                })
-                .addFields([
-                    {
-                        name: 'User ID',
-                        value: `\`${userID}\``,
-                        inline: true
-                    },
-                    {
-                        name: 'Category',
-                        value: `\`${category}\``,
-                        inline: true
-                    }
-                ])
-                .setColor('Yellow');
-
-            return webhook.send({
-                username: 'Ticket Claimed',
-                embeds: [embed],
-                avatarURL: botImageURLs.ticketClaimed
-            });
-        }
-
-        if (type === 'ticketDeleted') {
-            const embed = new EmbedBuilder()
-                .setTitle('Ticket Deleted')
-                .setDescription(`Ticket \`${channel.name}\` was deleted by ${user.toString()} at ${time()}`)
-                .setAuthor({
-                    name: user.username,
-                    iconURL: user.displayAvatarURL()
-                })
-                .addFields([
-                    {
-                        name: 'User ID',
-                        value: `\`${userID}\``,
-                        inline: true
-                    },
-                    {
-                        name: 'Category',
-                        value: `\`${category}\``,
-                        inline: true
-                    }
-                ])
-                .setColor('Red');
-
-            return webhook.send({
-                username: 'Ticket Deleted',
-                embeds: [embed],
-                avatarURL: botImageURLs.ticketDeleted
-            });
-        }
+        return webhook.send({
+            username: title,
+            embeds: [embed],
+            avatarURL
+        });
     }
 }

@@ -3,13 +3,23 @@ import { join } from "path";
 import { BaseCommand } from "../interfaces";
 import BotClient from "./Client";
 
-import { REST, Routes, SlashCommandBuilder } from "discord.js";
+import { REST, Routes } from "discord.js";
 import { guildID } from "../../config/config.json";
 import Logger from "../features/Logger";
 
+/**
+ * Represents a command handler that loads and registers commands for a Discord bot.
+ */
 export default class CommandHandler {
+    /**
+     * Creates a new instance of the CommandHandler class.
+     * @param client The Discord bot client.
+     */
     constructor(private client: BotClient) {}
 
+    /**
+     * Loads all the commands from the command folders and adds them to the client's command collection.
+     */
     public loadCommands(): void {
         const commandFolders = readdirSync(join(__dirname, "..", "commands"));
         for (const folder of commandFolders) {
@@ -23,6 +33,10 @@ export default class CommandHandler {
         Logger.success("Commands loaded.");
     }
 
+    /**
+     * Registers the application commands with Discord.
+     * @throws An error if no token or client ID is provided.
+     */
     public async registerCommands(): Promise<void> {
         if (!process.env.TOKEN) throw new Error("No token provided.");
 

@@ -4,9 +4,19 @@ import { BaseSelectMenu, BaseModal, BaseButton } from "../interfaces";
 import BotClient from "./Client";
 import Logger from "../features/Logger";
 
-export default class Interactionhandler {
+/**
+ * Represents an InteractionHandler class.
+ */
+export default class InteractionHandler {
+    /**
+     * Creates an instance of InteractionHandler.
+     * @param {BotClient} client - The BotClient instance.
+     */
     public constructor(private client: BotClient) {}
 
+    /**
+     * Loads select menus.
+     */
     public loadSelectMenus(): void {
         const selectMenus = readdirSync(join(__dirname, "..", "interactions", "selectMenus")).filter(file => file.endsWith(".ts"));
 
@@ -18,6 +28,9 @@ export default class Interactionhandler {
         Logger.success("Select menus loaded.");
     }
 
+    /**
+     * Loads modals.
+     */
     public loadModals(): void {
         const modals = readdirSync(join(__dirname, "..", "interactions", "modals")).filter(file => file.endsWith(".ts"));
 
@@ -29,6 +42,9 @@ export default class Interactionhandler {
         Logger.success("Modals loaded.");
     }
 
+    /**
+     * Loads buttons.
+     */
     public loadButtons(): void {
         const buttons = readdirSync(join(__dirname, "..", "interactions", "buttons")).filter(file => file.endsWith(".ts"));
 

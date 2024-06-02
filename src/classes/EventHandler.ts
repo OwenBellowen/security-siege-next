@@ -4,9 +4,15 @@ import { BaseEvent } from "../interfaces";
 import BotClient from "./Client";
 import Logger from "../features/Logger";
 
+/**
+ * Represents an event handler that loads and handles events for a bot client.
+ */
 export default class EventHandler {
     constructor(private client: BotClient) {}
 
+    /**
+     * Loads events from event folders and sets up event listeners for each event.
+     */
     public loadEvents(): void {
         const eventFolders = readdirSync(join(__dirname, "..", "events"));
         for (const folder of eventFolders) {
