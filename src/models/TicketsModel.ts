@@ -1,3 +1,4 @@
+import { time } from 'discord.js';
 import { model, Schema } from 'mongoose';
 
 export interface ITicketCategoryQuestion {
@@ -40,6 +41,7 @@ export interface ITicket {
     userID: string;
     claimedBy: string;
     category: string;
+    createdAt?: string;
 }
 
 export interface ITicketLogs {
@@ -63,7 +65,8 @@ export const TicketSchema = new Schema({
     channelID: { type: String, required: true },
     userID: { type: String, required: true },
     claimedBy: { type: String, required: false },
-    category: { type: String, required: true }
+    category: { type: String, required: true },
+    createdAt: { type: String, required: false, default: time() }
 });
 
 export const TicketLogsSchema = new Schema({

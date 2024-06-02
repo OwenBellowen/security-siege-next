@@ -2,7 +2,8 @@ import {
     TicketEmbedModel,
     ITicketCategoryQuestion,
     ITicketCategory,
-    ITicketEmbed
+    ITicketEmbed,
+    TicketLogsModel
 } from "../models/TicketsModel";
 
 export default class Ticket {
@@ -12,6 +13,10 @@ export default class Ticket {
 
     public static async getEmbed(guildID: string) {
         return await TicketEmbedModel.findOne({ guildID });
+    }
+
+    public static async getLogs(guildID: string) {
+        return await TicketLogsModel.findOne({ guildID });
     }
 
     public static async addCategory(guildID: string, category: ITicketCategory) {

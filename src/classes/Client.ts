@@ -9,6 +9,7 @@ import Logger from "../features/Logger";
 import "dotenv/config";
 import config from "../../config/config.json";
 import Interactionhandler from "./InteractionHandler";
+import TicketLogger from "../features/TicketLogger";
 
 export default class BotClient extends Client {
     public commands: Collection<string, BaseCommand> = new Collection();
@@ -18,6 +19,7 @@ export default class BotClient extends Client {
     public buttons: Collection<string, BaseButton> = new Collection();
 
     public ticketCache: Collection<string, string> = new Collection();
+    public ticketLogger: TicketLogger = new TicketLogger(this);
 
     private commandHandler: CommandHandler = new CommandHandler(this);
     private eventHandler: EventHandler = new EventHandler(this);
