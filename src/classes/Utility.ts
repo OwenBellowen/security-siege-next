@@ -35,6 +35,12 @@ export default class Utility {
         });
     }
 
+    /**
+     * Retrieves a TextChannel object based on the provided channel ID.
+     * @param channelID - The ID of the channel to retrieve.
+     * @param client - The BotClient instance.
+     * @returns A Promise that resolves to a TextChannel object.
+     */
     public static async getChannel(channelID: string, client: BotClient): Promise<TextChannel> {
         return client.channels.cache.get(channelID) as TextChannel;
     }
