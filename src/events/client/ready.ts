@@ -13,8 +13,8 @@ export default <BaseEvent>{
             status: "online",
             activities: [
                 {
-                    name: "your commands",
-                    type: ActivityType.Watching
+                    name: `with ${client.guilds.cache.get("733336278082519053")?.memberCount} members in Siege's server | /help`,
+                    type: ActivityType.Playing
                 }
             ]
         })

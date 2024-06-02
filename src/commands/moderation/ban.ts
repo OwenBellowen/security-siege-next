@@ -43,7 +43,7 @@ export default <BaseCommand>{
 
         if (!user.bannable) {
             return await interaction.reply({
-                content: moderation.ban.unableToBan.replace("{user}", user.user.username),
+                content: moderation.ban.unableToBan.replace("{USER}", user.user.username),
                 ephemeral: true
             });
         }
