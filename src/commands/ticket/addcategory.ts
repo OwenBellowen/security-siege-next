@@ -23,10 +23,16 @@ export default <BaseCommand>{
                 .setDescription('Enter the code name of the category. (Tip: Use a unique name without spaces)')
                 .setRequired(true)
         )
-        .addStringOption(option =>
+        .addStringOption(option => 
             option
                 .setName('staffroles')
                 .setDescription('The staff roles that can view the category. (Tip: Use role IDs separated by a comma)')
+                .setRequired(true)
+        )
+        .addStringOption(option =>
+            option
+                .setName('emoji')
+                .setDescription('Enter the emoji for the category. (Tip: You can use custom emojis)')
                 .setRequired(true)
         )
         .setDMPermission(false)
@@ -70,15 +76,6 @@ export default <BaseCommand>{
             .setMinLength(1)
             .setMaxLength(100);
 
-        const emoji = new TextInputBuilder()
-            .setCustomId('emoji')
-            .setPlaceholder('Enter the emoji for the category. (Tip: You can use custom emojis)')
-            .setLabel('Emoji')
-            .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true)
-            .setMinLength(1)
-            .setMaxLength(100);
-
         const ticketName = new TextInputBuilder()
             .setCustomId('ticketName')
             .setPlaceholder('Enter the ticket name for the category. (Tip: You can use parameters like {USERNAME}, {USERID})')
@@ -90,16 +87,16 @@ export default <BaseCommand>{
 
         const nameRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(name),
             descriptionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(description),
-            emojiRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(emoji),
             ticketNameRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(ticketName);
 
         const modal = new ModalBuilder()
             .setTitle('Add Category')
             .setCustomId('add-category')
-            .addComponents(nameRow, descriptionRow, emojiRow, ticketNameRow);
+            .addComponents(nameRow, descriptionRow, ticketNameRow);
 
         (interaction.client as BotClient).ticketCache.set('codeName', (interaction.options as CommandInteractionOptionResolver).getString('codename') as string);
         (interaction.client as BotClient).ticketCache.set('staffRoles', (interaction.options as CommandInteractionOptionResolver).getString('staffroles') as string);
+        (interaction.client as BotClient).ticketCache.set('emoji', (interaction.options as CommandInteractionOptionResolver).getString('emoji') as string);
         return await interaction.showModal(modal);
     }
 };

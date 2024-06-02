@@ -12,9 +12,9 @@ export default <BaseModal> {
     async execute(interaction: ModalSubmitInteraction) {
         const codeName = (interaction.client as BotClient).ticketCache.get("codeName"),
             staffRoles = (interaction.client as BotClient).ticketCache.get("staffRoles") as string,
+            emoji = (interaction.client as BotClient).ticketCache.get("emoji") as string,
             name = interaction.fields.getTextInputValue("name"),
             description = interaction.fields.getTextInputValue("description"),
-            emoji = interaction.fields.getTextInputValue("emoji"),
             ticketName = interaction.fields.getTextInputValue("ticketName");
 
         if (!codeName || !name || !description || !emoji || !ticketName || !staffRoles) {
