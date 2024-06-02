@@ -38,12 +38,9 @@ TOKEN=YOUR_DISCORD_BOT_TOKEN
 
 ### Changelog
 
-- [x] Added basic commands
-- [x] Added basic event handlers
-- [x] Added basic error handler
-- [x] Added basic interaction handler
-- [x] Added basic database handler
+- [x] Added basic handlers and commands
 - [x] Warning system
+- [x] Ticket system
 
 ## Contributing
 
