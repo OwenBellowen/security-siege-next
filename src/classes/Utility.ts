@@ -1,3 +1,6 @@
+import { TextChannel } from "discord.js";
+import BotClient from "./Client";
+
 /**
  * Utility class with various helper methods.
  */
@@ -30,5 +33,9 @@ export default class Utility {
                 v = c === "x" ? r : (r & 0x3) | 0x8;
             return v.toString(16);
         });
+    }
+
+    public static async getChannel(channelID: string, client: BotClient): Promise<TextChannel> {
+        return client.channels.cache.get(channelID) as TextChannel;
     }
 }
