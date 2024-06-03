@@ -1,6 +1,7 @@
 import { Client, Collection, IntentsBitField } from "discord.js";
 import { BaseCommand, BaseEvent, BaseSelectMenu, BaseModal, BaseButton } from "../interfaces";
 import { connect } from "mongoose";
+import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 
 import CommandHandler from "./CommandHandler";
 import EventHandler from "./EventHandler";
@@ -44,6 +45,12 @@ export default class BotClient extends Client {
      * Collection of tickets.
      */
     public ticketCache: Collection<string, string> = new Collection();
+
+    /**
+     * Google Generative AI instance.
+     */
+    public ai: GenerativeModel = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+        .getGenerativeModel({ model: "gemini-1.5-flash" });
 
     /**
      * Ticket logger instance.
