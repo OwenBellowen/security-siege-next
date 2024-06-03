@@ -6,6 +6,8 @@ import {
     TicketLogsModel
 } from "../models/TicketsModel";
 
+type CategoryField = "name" | "description" | "emoji" | "ticketName" | "staffRoles";
+
 /**
  * Represents a Ticket class.
  */
@@ -113,6 +115,69 @@ export default class Ticket {
         return TicketEmbedModel.findOneAndUpdate(
             { guildID, "categories.codeName": codeName },
             { $pull: { "categories.$.questions": { label } } },
+            { new: true }
+        );
+    }
+
+    /**
+     * Updates a question in a category in the ticket embed.
+     * @param guildID - The ID of the guild.
+     * @param codeName - The code name of the category.
+     * @param label - The label of the question to update.
+     * @param question - The updated question.
+     * @returns A promise that resolves to the updated embed.
+     */
+    public static async updateQuestion(guildID: string, codeName: string, label: string, question: ITicketCategoryQuestion) {
+        const embed = await Ticket.getEmbed(guildID);
+        if (!embed) return null;
+
+        if (!embed.categories) embed.categories = [];
+
+        const category = embed.categories.find((category) => category.codeName === codeName);
+        if (!category) return null;
+
+        if (!category.questions) category.questions = [];
+
+        return TicketEmbedModel.findOneAndUpdate(
+            { guildID, "categories.codeName": codeName, "categories.questions.label": label },
+            { $set: { "categories.$.questions.$": question } },
+            { new: true }
+        );
+    }
+
+    /**
+     * Updates a category in the ticket embed.
+     * @param guildID - The ID of the guild.
+     * @param codeName - The code name of the category.
+     * @param field - The field to update.
+     * @param value - The new value.
+     * @returns A promise that resolves to the updated embed.
+     */
+    public static async updateCategory(guildID: string, codeName: string, field: CategoryField, value: string, action?: "add" | "remove") {
+        const embed = await Ticket.getEmbed(guildID);
+        if (!embed) return null;
+
+        if (!embed.categories) embed.categories = [];
+
+        if (field === "staffRoles") {
+            if (action === "add") {
+                return TicketEmbedModel.findOneAndUpdate(
+                    { guildID, "categories.codeName": codeName },
+                    { $push: { "categories.$.staffRoles": value } },
+                    { new: true }
+                );
+            } else if (action === "remove") {
+                return TicketEmbedModel.findOneAndUpdate(
+                    { guildID, "categories.codeName": codeName },
+                    { $pull: { "categories.$.staffRoles": value } },
+                    { new: true }
+                );
+            }
+        }
+
+        return TicketEmbedModel.findOneAndUpdate(
+            { guildID, "categories.codeName": codeName },
+            { $set: { [`categories.$.${field}`]: value } },
             { new: true }
         );
     }
