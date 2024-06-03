@@ -33,6 +33,7 @@ export interface ITicketEmbed {
     startEmbed: boolean | false;
     allowedRoles: string[];
     dmUser?: boolean | false;
+    ticketCategoryID?: string; // The category ID where the ticket will be created (if not specified, it will be created in the same category as the embed)
     categories?: ITicketCategory[];
 }
 
@@ -57,8 +58,9 @@ export const TicketEmbedSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     startEmbed: { type: Boolean, required: false, default: false },
-    dmUser: { type: Boolean, required: false, default: false },
     allowedRoles: { type: Array<String>, required: false, default: [] },
+    dmUser: { type: Boolean, required: false, default: false },
+    ticketCategoryID: { type: String, required: false, default: null },
     categories: { type: Array<ITicketCategory>, required: false, default: [] }
 });
 

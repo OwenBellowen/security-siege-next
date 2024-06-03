@@ -1,7 +1,6 @@
 import {
     CommandInteraction,
     CommandInteractionOptionResolver,
-    EmbedBuilder,
     Role,
     PermissionFlagsBits,
     SlashCommandBuilder

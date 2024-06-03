@@ -31,7 +31,7 @@ export default <BaseModal>{
             });
         }
 
-        const { categories, guildID, categoryID, allowedRoles } = embedModel;
+        const { categories, guildID, categoryID, allowedRoles, ticketCategoryID } = embedModel;
 
         if (!categories || categories.length === 0) {
             return interaction.reply({
@@ -49,12 +49,14 @@ export default <BaseModal>{
             });
         }
 
+        const categoryChannel = ticketCategoryID ? interaction.guild.channels.cache.get(ticketCategoryID) as CategoryChannel : interaction.guild.channels.cache.get(categoryID) as CategoryChannel;
+
         const ticketChannel = await (interaction.client as BotClient).guilds.cache.get(guildID)?.channels.create({
             name: category.ticketName
                 .replace('{USERNAME}', interaction.user.username)
                 .replace('{USERID}', interaction.user.id),
             type: ChannelType.GuildText,
-            parent: (interaction.client as BotClient).guilds.cache.get(guildID)?.channels.cache.get(categoryID) as CategoryChannel,
+            parent: categoryChannel,
             permissionOverwrites: [
                 {
                     id: interaction.guild.roles.everyone.id,

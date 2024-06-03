@@ -46,6 +46,13 @@ export default <BaseSelectMenu>{
             });
         }
 
+        if (!category.questions || category.questions.length === 0) {
+            return interaction.reply({
+                content: 'There are no questions set up for this category. Please contact a staff member.',
+                ephemeral: true
+            });
+        }
+
         const questions: ActionRowBuilder<ModalActionRowComponentBuilder>[] = [];
 
         category.questions.forEach(question => {
