@@ -7,7 +7,8 @@ import {
     ModalActionRowComponentBuilder,
     ModalBuilder,
     TextInputBuilder,
-    TextInputStyle
+    TextInputStyle,
+    Role
 } from 'discord.js';
 import { BaseCommand } from '../../interfaces';
 import Ticket from '../../features/Ticket';
@@ -23,10 +24,10 @@ export default <BaseCommand>{
                 .setDescription('Enter the code name of the category. (Tip: Use a unique name without spaces)')
                 .setRequired(true)
         )
-        .addStringOption(option => 
+        .addRoleOption(option =>
             option
                 .setName('staffroles')
-                .setDescription('The staff roles that can view the category. (Tip: Use role IDs separated by a comma)')
+                .setDescription('Enter the staff roles for the category.')
                 .setRequired(true)
         )
         .addStringOption(option =>
@@ -95,7 +96,7 @@ export default <BaseCommand>{
             .addComponents(nameRow, descriptionRow, ticketNameRow);
 
         (interaction.client as BotClient).ticketCache.set('codeName', (interaction.options as CommandInteractionOptionResolver).getString('codename') as string);
-        (interaction.client as BotClient).ticketCache.set('staffRoles', (interaction.options as CommandInteractionOptionResolver).getString('staffroles') as string);
+        (interaction.client as BotClient).ticketCache.set('staffRoles', ((interaction.options as CommandInteractionOptionResolver).getRole('staffroles') as Role).id);
         (interaction.client as BotClient).ticketCache.set('emoji', (interaction.options as CommandInteractionOptionResolver).getString('emoji') as string);
         return await interaction.showModal(modal);
     }
