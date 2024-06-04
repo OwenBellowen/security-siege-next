@@ -10,11 +10,12 @@ export default <BaseEvent>{
 
         if (message.guildId !== client.config.guildID) return;
 
-        const infoBot = `You are ${client.user?.username}, a Discord multi-purpose bot.`;
-        const user = `User: ${message.author.username} sent a message: \`${message.content}\``;
-        const prompt = "Give simple information about the context."
-        const context = await (await client.ai.generateContent([infoBot, user, prompt])).response;
-        const text = context.text();
-        return message.reply(text);
+        // Not finished implemented
+        // const infoBot = `You are ${client.user?.username}, a Discord multi-purpose bot.`;
+        // const user = `User: ${message.author.username} sent a message: \`${message.content}\``;
+        // const prompt = "Give simple information about the context."
+        // const context = await (await client.ai.generateContent([infoBot, user, prompt])).response;
+        // const text = context.text();
+        // return message.reply(text);
     }
 }
