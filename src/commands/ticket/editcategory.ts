@@ -115,7 +115,7 @@ export default <BaseCommand>{
                 )
         )
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: "ticket",
         usage: "<subcommand> <codename> <value>",
@@ -127,7 +127,7 @@ export default <BaseCommand>{
             "staffroles support @Support Team add",
             "staffroles support @Support Team remove"
         ],
-        permissions: ["Administrator"]
+        permissions: ["Administrator", "ManageMessages"]
     },
     async execute(interaction: CommandInteraction) {
         const options = interaction.options as CommandInteractionOptionResolver;

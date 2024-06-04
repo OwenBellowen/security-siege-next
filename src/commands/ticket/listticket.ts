@@ -32,7 +32,7 @@ export default <BaseCommand>{
                 .setAutocomplete(true)
         )
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: "ticket",
         usage: "<type>",
@@ -40,7 +40,7 @@ export default <BaseCommand>{
             "categories",
             "questions"
         ],
-        permissions: ["Administrator"]
+        permissions: ["Administrator", "ManageMessages"]
     },
     async execute(interaction: CommandInteraction) {
         const options = interaction.options as CommandInteractionOptionResolver;

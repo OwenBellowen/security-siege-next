@@ -7,7 +7,6 @@ import {
 } from "discord.js";
 import Ticket from "../../features/Ticket";
 import { BaseCommand } from "../../interfaces";
-import BotClient from "../../classes/Client";
 import { TicketEmbedModel } from "../../models/TicketsModel";
 
 export default <BaseCommand>{
