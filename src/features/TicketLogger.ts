@@ -3,16 +3,19 @@ import {
     EmbedBuilder,
     User,
     time,
-    ColorResolvable
+    ColorResolvable,
+    CategoryChannel
 } from "discord.js";
 import { TicketLogsModel, TicketModel } from "../models/TicketsModel";
 import BotClient from "../classes/Client";
 
-type LogType = 'ticketOpened' | 'ticketClosed' | 'ticketClaimed' | 'ticketDeleted';
+type LogType = 'ticketOpened' | 'ticketClosed' | 'ticketClaimed' | 'ticketDeleted' | 'ticketReopened' | 'ticketMoved';
 const botImageURLs = {
     ticketOpened: 'https://i.imgur.com/M38ZmjM.png',
     ticketClosed: 'https://i.imgur.com/5ShDA4g.png',
     ticketClaimed: 'https://i.imgur.com/qqEaUyR.png',
+    ticketReopened: 'https://i.imgur.com/qqEaUyR.png',
+    ticketMoved: 'https://i.imgur.com/M38ZmjM.png',
     ticketDeleted: 'https://i.imgur.com/obTW2BS.png'
 };
 
@@ -26,9 +29,10 @@ export default class TicketLogger {
      * Logs a ticket event.
      * @param type - The type of the event.
      * @param channel - The text channel where the event occurred.
+     * @param category - The category where the channel was moved to. (Only for ticketMoved event)
      * @returns A Promise that resolves to the result of sending the log message.
      */
-    public async log(type: LogType, channel: TextChannel) {
+    public async log(type: LogType, channel: TextChannel, categoryChannel?: CategoryChannel) {
         const logs = await TicketLogsModel.findOne({ guildID: channel.guild.id });
         const ticket = await TicketModel.findOne({ channelID: channel.id });
 
@@ -74,6 +78,16 @@ export default class TicketLogger {
                 title = 'Ticket Deleted';
                 description = `Ticket \`${channel.name}\` was deleted by ${user.toString()} at ${time()}`;
                 color = 'Red';
+                break;
+            case 'ticketReopened':
+                title = 'Ticket Reopened';
+                description = `Ticket reopened by ${user.toString()} in ${channel.toString()} at ${time()}`;
+                color = 'Green';
+                break;
+            case 'ticketMoved':
+                title = 'Ticket Moved';
+                description = `Ticket moved by ${user.toString()} in ${channel.toString()} at ${time()} to ${categoryChannel?.toString()}`;
+                color = 'Blue';
                 break;
             default:
                 return null;

@@ -32,7 +32,7 @@ export default <BaseCommand>{
                 .setAutocomplete(true)
         )
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: "ticket",
         usage: "<type>",
@@ -40,7 +40,7 @@ export default <BaseCommand>{
             "categories",
             "questions"
         ],
-        permissions: ["Administrator"]
+        permissions: ["Administrator", "ManageMessages"]
     },
     async execute(interaction: CommandInteraction) {
         const options = interaction.options as CommandInteractionOptionResolver;
@@ -78,7 +78,7 @@ export default <BaseCommand>{
                     const roles = interaction.guild?.roles.cache.filter((role) => category.staffRoles.includes(role.id)).map((role) => role.toString()) || [];
                     return {
                         name: `Category ${index + 1}:`,
-                        value: `**Name:** ${category.name}\n**Description:** ${category.description}\n**Emoji:** ${category.emoji}\n**Ticket Name:** ${category.ticketName}\n**Staff Roles:** ${roles ? roles.join(", ") : "None"}`
+                        value: `**Name:** ${category.name}\n**Codename:** ${category.codeName}\n**Description:** ${category.description}\n**Emoji:** ${category.emoji}\n**Ticket Name:** ${category.ticketName}\n**Staff Roles:** ${roles ? roles.join(", ") : "None"}`
                     }
                 }));
             }

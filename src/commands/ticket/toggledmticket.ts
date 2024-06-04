@@ -11,12 +11,12 @@ export default <BaseCommand>{
         .setName('toggledmticket')
         .setDescription('Toggles whether you want the bot to send a DM to the user when a ticket is closed, or claimed.')
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: 'ticket',
         usage: '',
         examples: [],
-        permissions: ["Administrator"]
+        permissions: ["Administrator", "ManageMessages"]
     },
     async execute(interaction: CommandInteraction) {
         if (!interaction.guild) return;

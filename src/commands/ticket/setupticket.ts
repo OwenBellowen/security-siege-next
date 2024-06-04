@@ -8,7 +8,8 @@ import {
     TextInputBuilder,
     TextInputStyle,
     CommandInteractionOptionResolver,
-    TextChannel
+    TextChannel,
+    ChannelType
 } from 'discord.js';
 import { BaseCommand } from '../../interfaces';
 import Ticket from '../../features/Ticket';
@@ -22,6 +23,7 @@ export default <BaseCommand>{
             option.setName('channel')
                 .setDescription('The channel to set up the ticket system in (Make sure the category is set up)')
                 .setRequired(false)
+                .addChannelTypes(ChannelType.GuildText)
         )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
