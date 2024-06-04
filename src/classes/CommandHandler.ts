@@ -56,7 +56,11 @@ export default class CommandHandler {
             //     .then(() => Logger.info("Successfully removed all global commands."));
 
             // Register the commands for a specific guild
-            await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildID), { body: commands });
+            // Register the commands globally
+            await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+
+            // Register the commands for a specific guild
+            // await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildID), { body: commands });
 
             Logger.success("Successfully registered application commands.");
         } catch (error) {
