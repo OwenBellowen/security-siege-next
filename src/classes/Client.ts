@@ -50,7 +50,12 @@ export default class BotClient extends Client {
      * Google Generative AI instance.
      */
     public ai: GenerativeModel = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
-        .getGenerativeModel({ model: "gemini-1.5-flash" });
+        .getGenerativeModel({ model: "gemini-1.5-pro", generationConfig: {
+            maxOutputTokens: 100,
+            temperature: 0.5,
+            topP: 1,
+            topK: 40
+        }});
 
     /**
      * Ticket logger instance.

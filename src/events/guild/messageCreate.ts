@@ -8,9 +8,13 @@ export default <BaseEvent>{
     async execute(client: BotClient, message: Message) {
         if (message.author.bot) return;
 
-        // const context = await client.ai.generateContent(message.content);
-        // const result = await context.response;
-        // const text = result.text();
-        // return message.reply(text);
+        if (message.guildId !== client.config.guildID) return;
+
+        const infoBot = `You are ${client.user?.username}, a Discord multi-purpose bot.`;
+        const user = `User: ${message.author.username} sent a message: \`${message.content}\``;
+        const prompt = "Give simple information about the context."
+        const context = await (await client.ai.generateContent([infoBot, user, prompt])).response;
+        const text = context.text();
+        return message.reply(text);
     }
 }
