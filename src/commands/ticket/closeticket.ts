@@ -4,10 +4,7 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
     TextChannel,
-    ButtonBuilder,
-    ButtonStyle,
     ActionRowBuilder,
-    EmbedBuilder,
     TextInputBuilder,
     TextInputStyle,
     ModalBuilder
@@ -17,7 +14,6 @@ import { TicketModel } from "../../models/TicketsModel";
 import Ticket from "../../features/Ticket";
 import Utility from "../../classes/Utility";
 import BotClient from "../../classes/Client";
-import Logger from "../../features/Logger";
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()

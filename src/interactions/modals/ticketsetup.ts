@@ -29,6 +29,7 @@ export default <BaseModal> {
             description,
             startEmbed: false,
             allowedRoles: [],
+            blacklistedRoles: [],
             categories: []
         });
 

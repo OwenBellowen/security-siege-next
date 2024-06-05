@@ -1,8 +1,5 @@
 import {
     StringSelectMenuInteraction,
-    EmbedBuilder,
-    CategoryChannel,
-    ChannelType,
     ModalBuilder,
     ModalActionRowComponentBuilder,
     TextInputBuilder,

@@ -1,7 +1,6 @@
 import {
     CommandInteraction,
     TextChannel,
-    EmbedBuilder,
     SlashCommandBuilder,
     ChannelType,
     PermissionFlagsBits,

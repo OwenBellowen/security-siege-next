@@ -1,10 +1,9 @@
 import { BaseButton } from "../../interfaces";
 import { TicketModel } from "../../models/TicketsModel";
 import Ticket from "../../features/Ticket";
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, TextChannel, TextInputBuilder, TextInputStyle, ModalBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonInteraction, TextInputBuilder, TextInputStyle, ModalBuilder } from "discord.js";
 import BotClient from "../../classes/Client";
 import Utility from "../../classes/Utility";
-import Logger from "../../features/Logger";
 
 export default <BaseButton>{
     customId: "close",

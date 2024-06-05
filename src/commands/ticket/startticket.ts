@@ -1,6 +1,5 @@
 import {
     CommandInteraction,
-    CommandInteractionOptionResolver,
     EmbedBuilder,
     ButtonBuilder,
     ButtonStyle,
@@ -12,7 +11,6 @@ import {
 import { BaseCommand } from '../../interfaces';
 import Logger from '../../features/Logger';
 import Ticket from '../../features/Ticket';
-import BotClient from '../../classes/Client';
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()

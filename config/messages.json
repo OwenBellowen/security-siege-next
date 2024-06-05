@@ -2,7 +2,7 @@
     "moderation": {
         "purge": {
             "invalidAmount": "Please provide a valid amount of message(s) to purge.\nExpected a number between 1 and 100.\nGot: **{AMOUNT}**.",
-            "success": "Successfully purged **{AMOUNT}** message(s).",
+            "success": "Successfully found and purged **{AMOUNT}** message(s).",
             "error": "An error occurred while trying to purge message(s)."
         },
         "ban": {
