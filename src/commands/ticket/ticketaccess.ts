@@ -11,13 +11,23 @@ import { TicketEmbedModel } from "../../models/TicketsModel";
 
 export default <BaseCommand>{
     data: new SlashCommandBuilder()
-        .setName('allowticketaccess')
-        .setDescription('Allow a role to access/open a ticket')
+        .setName('ticketaccess')
+        .setDescription('Allow or disallow a role to access/open a ticket')
         .addRoleOption(option =>
             option
                 .setName('role')
                 .setDescription('Enter the role you want to allow')
                 .setRequired(true)
+        )
+        .addStringOption(option =>
+            option
+                .setName('action')
+                .setDescription('Enter the action you want to perform')
+                .setRequired(true)
+                .addChoices(
+                    { name: 'Allow', value: 'allow' },
+                    { name: 'Disallow', value: 'disallow' }
+                )
         )
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
@@ -42,6 +52,7 @@ export default <BaseCommand>{
         }
 
         const role = (interaction.options as CommandInteractionOptionResolver).getRole('role') as Role;
+        const action = (interaction.options as CommandInteractionOptionResolver).getString('action') as string;
 
         if (!role) {
             return interaction.reply({
@@ -50,28 +61,33 @@ export default <BaseCommand>{
             });
         }
 
-        if (embed.allowedRoles.includes(role.id)) {
-            return interaction.reply({
-                content: 'This role already has access to the ticket system',
-                ephemeral: true
-            });
+        if (action === 'allow') {
+            if (embed.allowedRoles.includes(role.id)) {
+                return interaction.reply({
+                    content: 'This role already has access to the ticket system',
+                    ephemeral: true
+                });
+            }
+
+            embed.allowedRoles.push(role.id);
+        } else {
+            if (!embed.allowedRoles.includes(role.id)) {
+                return interaction.reply({
+                    content: 'This role does not have access to the ticket system',
+                    ephemeral: true
+                });
+            }
+
+            embed.allowedRoles = embed.allowedRoles.filter(r => r !== role.id);
         }
 
-        embed.allowedRoles.push(role.id);
-
-        const updated = await TicketEmbedModel.findOneAndUpdate({ guildID: interaction.guildId as string }, { allowedRoles: embed.allowedRoles });
-        
-        if (!updated) {
-            return interaction.reply({
-                content: 'An error occurred while updating the ticket system',
-                ephemeral: true
-            });
-        }
-
-        await updated.save();
+        await TicketEmbedModel.findOneAndUpdate(
+            { guildID: interaction.guildId as string },
+            { allowedRoles: embed.allowedRoles }
+        );
 
         interaction.reply({
-            content: `The role ${role.name} has been allowed to access the ticket system`,
+            content: `The role ${role.toString()} has been ${action === 'allow' ? 'allowed' : 'disallowed'} to access the ticket system`,
             ephemeral: true
         });
     }
