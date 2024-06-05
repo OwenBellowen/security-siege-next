@@ -63,7 +63,7 @@ export default class CommandHandler {
 
             Logger.success("Successfully registered application commands.");
         } catch (error) {
-            console.error(error);
+            Logger.error(`Failed to register application commands: ${error}`);
         }
     }
 }
