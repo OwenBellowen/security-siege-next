@@ -2,7 +2,6 @@ import {
     CommandInteraction,
     SlashCommandBuilder,
     TextChannel,
-    EmbedBuilder,
     CommandInteractionOptionResolver,
     PermissionFlagsBits
 } from "discord.js";
@@ -71,7 +70,7 @@ export default <BaseCommand>{
         try {
             await channel.bulkDelete(filteredMessages);
             await interaction.reply({
-                content: moderation.purge.success.replace("{AMOUNT}", amount.toString()),
+                content: moderation.purge.success.replace("{AMOUNT}", messages.size.toString()),
                 ephemeral: true
             });
         } catch (error) {

@@ -10,7 +10,7 @@ export default <BaseCommand>{
     data: new SlashCommandBuilder()
         .setName('toggledmticket')
         .setDescription('Toggles whether you want the bot to send a DM to the user when a ticket is closed, or claimed.')
-        .setDMPermission(false)
+        .setDMPermission(true)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: 'ticket',

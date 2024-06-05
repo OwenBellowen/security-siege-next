@@ -86,7 +86,7 @@ export default <BaseCommand>{
         if (!logsChannel) return;
 
         try {
-            await (interaction.client as BotClient).ticketLogger.log('ticketMoved', channel, category);
+            await (interaction.client as BotClient).ticketLogger.log('ticketMoved', channel, { categoryChannel: category });
         } catch (error) {
             Logger.error(`An error occurred while logging the ticket: ${error}`);
         }

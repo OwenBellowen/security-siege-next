@@ -1,6 +1,6 @@
 {
   "name": "security-siege-next",
-  "version": "1.7.6",
+  "version": "2.0.0",
   "description": "A rewrite of my Discord bot - Security Siege",
   "main": "src/index.ts",
   "scripts": {
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.12.0",
+    "discord-html-transcripts": "^3.2.0",
     "discord.js": "^14.15.2",
     "mongoose": "^8.4.0"
   },

@@ -4,8 +4,7 @@ import {
     SlashCommandBuilder,
     PermissionFlagsBits,
     EmbedBuilder,
-    AutocompleteInteraction,
-    GuildMemberRoleManager
+    AutocompleteInteraction
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 import Ticket from "../../features/Ticket";

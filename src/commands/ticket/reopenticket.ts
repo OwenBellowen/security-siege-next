@@ -78,5 +78,10 @@ export default <BaseCommand>{
         } catch (error) {
             Logger.error(`An error occurred while logging the ticket: ${error}`);
         }
+
+        return interaction.reply({
+            content: "Ticket reopened has been reopened!",
+            ephemeral: true
+        })
     }
 }

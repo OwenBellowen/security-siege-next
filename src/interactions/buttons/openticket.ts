@@ -1,4 +1,4 @@
-import { BaseButton } from "../../interfaces";
+ import { BaseButton } from "../../interfaces";
 import {
     ActionRowBuilder,
     StringSelectMenuBuilder,
@@ -23,7 +23,7 @@ export default <BaseButton>{
             });
         }
 
-        const { categories, allowedRoles } = embedModel;
+        const { categories, allowedRoles, blacklistedRoles } = embedModel;
 
         if (!categories || categories.length === 0) {
             return interaction.reply({
@@ -32,12 +32,16 @@ export default <BaseButton>{
             });
         }
 
-        const member = interaction.member?.roles as GuildMemberRoleManager;
+        if (!interaction.member) return;
+
+        const member = interaction.member.roles as GuildMemberRoleManager;
 
         if (!categories.some(category => category.staffRoles.some(role => member.cache.has(role)))) {
-            if (allowedRoles && allowedRoles.length > 0) {
+            if (allowedRoles && allowedRoles.length > 0 && blacklistedRoles && blacklistedRoles.length > 0) {
                 const isAllowed = allowedRoles.some(role => member.cache.has(role));
-                if (!isAllowed) {
+                const isBlacklisted = blacklistedRoles.some(role => member.cache.has(role));
+
+                if (!isAllowed || isBlacklisted) {
                     return interaction.reply({
                         content: 'You are not allowed to open a ticket in this server. Please contact a staff member.',
                         ephemeral: true
