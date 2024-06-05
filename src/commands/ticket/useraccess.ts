@@ -1,10 +1,8 @@
 import {
     CommandInteraction,
     CommandInteractionOptionResolver,
-    Role,
     PermissionFlagsBits,
-    SlashCommandBuilder,
-    TextChannel
+    SlashCommandBuilder
 } from "discord.js";
 import Ticket from "../../features/Ticket";
 import { BaseCommand } from "../../interfaces";
@@ -36,9 +34,10 @@ export default <BaseCommand>{
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator | PermissionFlagsBits.ManageMessages),
     config: {
         category: 'ticket',
-        usage: '<user>',
+        usage: '<user> <action>',
         examples: [
-            'OwenBellowen'
+            'OwenBellowen allow',
+            'JamesBellowen disallow'
         ],
         permissions: ['Administrator', 'ManageMessages']
     },
@@ -64,39 +63,42 @@ export default <BaseCommand>{
             });
         }
         
-        const ticket = await TicketModel.findOne({ guildID: interaction.guildId as string, userID: user.id });
+        const ticket = await TicketModel.findOne({ guildID: interaction.guildId as string, channelID: interaction.channelId });
 
         if (!ticket) {
             return interaction.reply({
-                content: 'This user did not open a ticket.',
+                content: 'This is not a valid ticket channel.',
                 ephemeral: true
             });
         }
 
-        const channel = await Utility.getChannel(ticket.channelID, interaction.client as BotClient) as TextChannel;
+        const channel = await Utility.getChannel(interaction.channelId, interaction.client as BotClient);
+
         if (!channel) {
             return interaction.reply({
-                content: 'The ticket channel could not be found.',
+                content: 'Channel not found',
                 ephemeral: true
             });
         }
 
-        if (interaction.channel !== channel) {
+        if (ticket.userID === user.id) {
             return interaction.reply({
-                content: 'You can only use this command in the ticket channel.',
+                content: 'The user was the one who opened the ticket. They can view the ticket channel once it is claimed.',
                 ephemeral: true
             });
         }
 
-        if (action === 'allow') {
-            if (!ticket.claimedBy) {
-                return interaction.reply({
-                    content: "The ticket hasn't been claimed yet.",
-                    ephemeral: true
-                });
-            }
+        const checked = (action === "allow") ? true : false;
 
-            
-        }
+        await channel.permissionOverwrites.edit(user.id, {
+            ViewChannel: checked,
+            SendMessages: checked,
+            ReadMessageHistory: checked
+        });
+
+        return interaction.reply({
+            content: `User ${user} has been ${action}ed access to the ticket channel`,
+            ephemeral: true
+        })
     }
 }

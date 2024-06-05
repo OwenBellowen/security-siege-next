@@ -7,7 +7,10 @@ import {
     ButtonBuilder,
     ButtonStyle,
     ActionRowBuilder,
-    EmbedBuilder
+    EmbedBuilder,
+    TextInputBuilder,
+    TextInputStyle,
+    ModalBuilder
 } from "discord.js";
 import { BaseCommand } from "../../interfaces";
 import { TicketModel } from "../../models/TicketsModel";
@@ -59,55 +62,20 @@ export default <BaseCommand>{
 
         const ticketChannel = await Utility.getChannel(ticket.channelID, interaction.client as BotClient);
 
-        if (!ticket.claimedBy) {
-            return interaction.reply({
-                content: 'This ticket has not been claimed yet!',
-                ephemeral: true
-            });
-        }
-
-        await TicketModel.updateOne({ guildID: interaction.guildId, channelID: channel.id }, { claimedBy: null });
-
-        const actionRow = new ActionRowBuilder<ButtonBuilder>()
+        const actionRow = new ActionRowBuilder<TextInputBuilder>()
             .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('delete_ticket')
-                    .setLabel('Delete Ticket')
-                    .setStyle(ButtonStyle.Danger)
-            );
+                new TextInputBuilder()
+                    .setCustomId('reason')
+                    .setLabel('Why are you closing this ticket?')
+                    .setPlaceholder('Enter the reason for closing the ticket')
+                    .setStyle(TextInputStyle.Paragraph)
+            )
 
-        const embed = new EmbedBuilder()
-            .setTitle('Ticket Closed')
-            .setDescription(`Ticket has been closed by ${interaction.user.toString()}`)
-            .setColor('Red');
+        const modal = new ModalBuilder()
+            .addComponents(actionRow)
+            .setCustomId('close_ticket')
+            .setTitle('Close Ticket');
 
-        await channel.send({
-            components: [actionRow],
-            embeds: [embed]
-        });
-
-        await channel.permissionOverwrites.edit(interaction.guild.roles.everyone, {
-            ViewChannel: false
-        });
-
-        interaction.reply({
-            content: 'Ticket has been closed!',
-            ephemeral: true
-        });
-
-        const logs = await Ticket.getLogs(interaction.guildId as string);
-
-        if (!logs) return;
-
-        const logsChannel = await Utility.getChannel(logs.channelID, interaction.client as BotClient);
-
-        if (!logsChannel) { return; }
-        else {
-            try {
-                (interaction.client as BotClient).ticketLogger.log('ticketClosed', ticketChannel);
-            } catch (error) {
-                Logger.error(`An error occurred while logging the ticket: ${error}`);
-            }
-        }
+        return await interaction.showModal(modal);
     }
 }

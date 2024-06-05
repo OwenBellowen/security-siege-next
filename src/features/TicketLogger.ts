@@ -4,7 +4,8 @@ import {
     User,
     time,
     ColorResolvable,
-    CategoryChannel
+    CategoryChannel,
+    AttachmentBuilder
 } from "discord.js";
 import { TicketLogsModel, TicketModel } from "../models/TicketsModel";
 import BotClient from "../classes/Client";
@@ -19,6 +20,12 @@ const botImageURLs = {
     ticketDeleted: 'https://i.imgur.com/obTW2BS.png'
 };
 
+interface logOptions {
+    categoryChannel?: CategoryChannel;
+    transcript?: AttachmentBuilder;
+    closeTicketReason?: string;
+}
+
 /**
  * Represents a TicketLogger class that handles logging ticket events.
  */
@@ -32,7 +39,7 @@ export default class TicketLogger {
      * @param category - The category where the channel was moved to. (Only for ticketMoved event)
      * @returns A Promise that resolves to the result of sending the log message.
      */
-    public async log(type: LogType, channel: TextChannel, categoryChannel?: CategoryChannel) {
+    public async log(type: LogType, channel: TextChannel, options?: logOptions) {
         const logs = await TicketLogsModel.findOne({ guildID: channel.guild.id });
         const ticket = await TicketModel.findOne({ channelID: channel.id });
 
@@ -86,7 +93,7 @@ export default class TicketLogger {
                 break;
             case 'ticketMoved':
                 title = 'Ticket Moved';
-                description = `Ticket moved by ${user.toString()} in ${channel.toString()} at ${time()} to ${categoryChannel?.toString()}`;
+                description = `Ticket moved by ${user.toString()} in ${channel.toString()} at ${time()} to ${options?.categoryChannel?.toString()}`;
                 color = 'Blue';
                 break;
             default:
@@ -115,6 +122,16 @@ export default class TicketLogger {
             .setColor(color);
 
         const avatarURL = botImageURLs[type];
+
+        if (options?.closeTicketReason) {
+            embed.addFields([
+                {
+                    name: 'Reason',
+                    value: `\`${options.closeTicketReason}\``,
+                    inline: false
+                }
+            ]);
+        }
 
         return webhook.send({
             username: title,

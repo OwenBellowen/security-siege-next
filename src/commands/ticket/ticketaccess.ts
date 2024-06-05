@@ -64,26 +64,36 @@ export default <BaseCommand>{
         if (action === 'allow') {
             if (embed.allowedRoles.includes(role.id)) {
                 return interaction.reply({
-                    content: 'This role already has access to the ticket system',
+                    content: `The role ${role.toString()} is already allowed to access the ticket system`,
                     ephemeral: true
                 });
+            }
+
+            if (embed.blacklistedRoles.includes(role.id)) {
+                const index = embed.blacklistedRoles.indexOf(role.id);
+                embed.blacklistedRoles.splice(index, 1);
             }
 
             embed.allowedRoles.push(role.id);
         } else {
-            if (!embed.allowedRoles.includes(role.id)) {
+            if (embed.blacklistedRoles.includes(role.id)) {
                 return interaction.reply({
-                    content: 'This role does not have access to the ticket system',
+                    content: `The role ${role.toString()} is already disallowed to access the ticket system`,
                     ephemeral: true
                 });
             }
 
-            embed.allowedRoles = embed.allowedRoles.filter(r => r !== role.id);
+            if (!embed.blacklistedRoles.includes(role.id)) {
+                embed.blacklistedRoles.push(role.id);
+            }
+
+            const index = embed.allowedRoles.indexOf(role.id);
+            embed.allowedRoles.splice(index, 1);
         }
 
         await TicketEmbedModel.findOneAndUpdate(
             { guildID: interaction.guildId as string },
-            { allowedRoles: embed.allowedRoles }
+            { allowedRoles: embed.allowedRoles, blacklistedRoles: embed.blacklistedRoles },
         );
 
         interaction.reply({
