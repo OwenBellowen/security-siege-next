@@ -4,8 +4,7 @@
   "description": "A rewrite of my Discord bot - Security Siege",
   "main": "src/index.ts",
   "scripts": {
-    "build": "ts-node src/index.ts",
-    "start": "tsc",
+    "start": "ts-node src/index.ts",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "keywords": [],
