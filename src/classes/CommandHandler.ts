@@ -48,8 +48,11 @@ export default class CommandHandler {
 
             if (!process.env.CLIENT_ID) throw new Error("No client ID provided.");
 
+            // Remove all commands globally
+            await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: [] });
+
             // Register the commands globally
-            // await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+            await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
 
             // Remove all global commands
             // await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guildID), { body: [] })
