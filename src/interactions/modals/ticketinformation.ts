@@ -6,7 +6,9 @@ import {
     ButtonBuilder,
     ButtonStyle,
     ActionRowBuilder,
-    time
+    time,
+    RestOrArray,
+    APIEmbedField
 } from 'discord.js';
 import { BaseModal } from '../../interfaces';
 import Ticket from '../../features/Ticket';
@@ -19,6 +21,7 @@ export default <BaseModal>{
     customId: "ticket_information",
     async execute(interaction: ModalSubmitInteraction) {
         const codeName = (interaction.client as BotClient).ticketCache.get(interaction.user.id) as string;
+        const ids = (interaction.client as BotClient).ticketQuestionIDs.get(interaction.user.id) as string[];
 
         if (!interaction.guild) return;
 
@@ -48,6 +51,21 @@ export default <BaseModal>{
                 ephemeral: true
             });
         }
+
+        const answersAndQuestions: RestOrArray<APIEmbedField> = [];
+
+        ids.forEach(id => {
+            const answer = interaction.fields.fields.find(field => field.customId === id);
+            const question = category.questions.find(question => question.id === id);
+
+            if (!answer || !question) return;
+
+            answersAndQuestions.push({
+                name: question.label,
+                value: `\`${answer.value}\``,
+                inline: false
+            });
+        });
 
         const categoryChannel = ticketCategoryID ? interaction.guild.channels.cache.get(ticketCategoryID) as CategoryChannel : interaction.guild.channels.cache.get(categoryID) as CategoryChannel;
 
@@ -94,6 +112,7 @@ export default <BaseModal>{
                     inline: true
                 }
             ])
+            .addFields(answersAndQuestions)
             .setFooter({
                 text: `Ticket created by ${interaction.user.username}`,
                 iconURL: interaction.user.displayAvatarURL()

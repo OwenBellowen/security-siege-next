@@ -51,7 +51,7 @@ export default <BaseSelectMenu>{
         }
 
         const questions: ActionRowBuilder<ModalActionRowComponentBuilder>[] = [];
-
+        const ids: string[] = [];
         category.questions.forEach(question => {
             questions.push(
                 new ActionRowBuilder<ModalActionRowComponentBuilder>()
@@ -64,6 +64,8 @@ export default <BaseSelectMenu>{
                             .setMaxLength(question.maxLength || 1000)
                     )
             );
+
+            ids.push(question.id);
         });
 
         const modal = new ModalBuilder()
@@ -75,6 +77,7 @@ export default <BaseSelectMenu>{
         try {
             await interaction.showModal(modal);
             (interaction.client as BotClient).ticketCache.set(interaction.user.id, category.codeName);
+            (interaction.client as BotClient).ticketQuestionIDs.set(interaction.user.id, ids);
         } catch (error) {
             Logger.error(`An error occurred while opening the ticket modal: ${(error as Error).message}`);
             return interaction.reply({
