@@ -46,6 +46,8 @@ export default class BotClient extends Client {
      */
     public ticketCache: Collection<string, string> = new Collection();
 
+    public ticketQuestionIDs: Collection<string, string[]> = new Collection();
+
     /**
      * Google Generative AI instance.
      */
