@@ -7,7 +7,6 @@ import Ticket from "../../features/Ticket";
 import BotClient from "../../classes/Client";
 import Utility from "../../classes/Utility";
 import Logger from "../../features/Logger";
-import { createTranscript } from "discord-html-transcripts";
 
 export default <BaseButton>{
     customId: 'delete_ticket',
@@ -43,7 +42,7 @@ export default <BaseButton>{
         if (!logsChannel) { return; }
 
         // @ts-ignore
-        const transcript = await createTranscript(ticketChannel);
+        // const transcript = await createTranscript(ticketChannel);
 
         try {
             await (interaction.client as BotClient).ticketLogger.log('ticketDeleted', ticketChannel);
