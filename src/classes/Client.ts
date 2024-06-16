@@ -116,7 +116,7 @@ export default class BotClient extends Client {
      * Connects to the database.
      */
     private async connectDatabase(): Promise<void> {
-        await connect(this.config.mongoURI, {
+        await connect(process.env.MONGO_URI as string, {
             dbName: "security-siege"
         })
             .then(() => Logger.success("Connected to the database."))
