@@ -59,12 +59,13 @@ export default <BaseCommand>{
             });
         }
 
-        await channel.send({
+        const message = await channel.send({
             embeds: [embed],
             components: [row]
         });
 
         embedModel.startEmbed = true;
+        embedModel.messageID = message.id;
 
         await embedModel.save();
 
