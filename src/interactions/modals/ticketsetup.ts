@@ -30,7 +30,9 @@ export default <BaseModal> {
             startEmbed: false,
             allowedRoles: [],
             blacklistedRoles: [],
-            categories: []
+            categories: [],
+            dmUser: false,
+            messageID: ''
         });
 
         if (!ticket) {
