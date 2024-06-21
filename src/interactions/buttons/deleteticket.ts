@@ -41,9 +41,6 @@ export default <BaseButton>{
 
         if (!logsChannel) { return; }
 
-        // @ts-ignore
-        // const transcript = await createTranscript(ticketChannel);
-
         try {
             await (interaction.client as BotClient).ticketLogger.log('ticketDeleted', ticketChannel);
         } catch (error) {
