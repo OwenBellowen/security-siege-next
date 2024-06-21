@@ -1,10 +1,11 @@
 import { Client, Collection, IntentsBitField } from "discord.js";
 import { BaseCommand, BaseEvent, BaseSelectMenu, BaseModal, BaseButton } from "../interfaces";
 import { connect } from "mongoose";
-import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 
 import CommandHandler from "./CommandHandler";
 import EventHandler from "./EventHandler";
+import AIHandler from "./AIHandler";
+import AutomodHandler from "./AutomodHandler";
 import Logger from "../features/Logger";
 
 import "dotenv/config";
@@ -51,13 +52,12 @@ export default class BotClient extends Client {
     /**
      * Google Generative AI instance.
      */
-    public ai: GenerativeModel = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
-        .getGenerativeModel({ model: "gemini-1.5-pro", generationConfig: {
-            maxOutputTokens: 100,
-            temperature: 0.5,
-            topP: 1,
-            topK: 40
-        }});
+    public ai: AIHandler = new AIHandler(this);
+
+    /**
+     * Automod handler instance.
+     */
+    public automod: AutomodHandler = new AutomodHandler(this);
 
     /**
      * Ticket logger instance.
@@ -110,6 +110,8 @@ export default class BotClient extends Client {
 
         // Connect to the database
         await this.connectDatabase();
+
+        // console.log(await this.automod.getLinks())
     }
 
     /**
