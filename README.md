@@ -3,7 +3,7 @@
 # Security Siege
 
 [![GitHub License](https://img.shields.io/github/license/Owenbellowen/security-siege-next)
-](https://github.com/OwenBellowen/security-siege-next/blob/main/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/OwenBellowen/security-siege-next)](https://github.com/OwenBellowen/security-siege-next/issues)  
+](https://github.com/OwenBellowen/security-siege-next/blob/main/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/OwenBellowen/security-siege-next)](https://github.com/OwenBellowen/security-siege-next/issues)  [![CodeQL](https://github.com/OwenBellowen/security-siege-next/actions/workflows/codeql.yml/badge.svg)](https://github.com/OwenBellowen/security-siege-next/actions/workflows/codeql.yml)  [![Dependabot Updates](https://github.com/OwenBellowen/security-siege-next/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/OwenBellowen/security-siege-next/actions/workflows/dependabot/dependabot-updates)  [![Dependency review](https://github.com/OwenBellowen/security-siege-next/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/OwenBellowen/security-siege-next/actions/workflows/dependency-review.yml)  
 A rewrite of my Discord bot - Security Siege
 
 ## About
