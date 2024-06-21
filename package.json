@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "npm run build && npm run start:pre",
-    "start:pre": "npm i -g ts-node-dev && npm run dev",
+    "start:pre": "npm i ts-node-dev && npm run dev",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "dev:watch": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "rimraf dist && tsc"
@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google/generative-ai": "^0.12.0",
+    "@google/generative-ai": "^0.13.0",
     "axios": "^1.7.2",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
