@@ -37,9 +37,9 @@ export default <BaseButton>{
         const member = interaction.member.roles as GuildMemberRoleManager;
 
         if (!categories.some(category => category.staffRoles.some(role => member.cache.has(role)))) {
-            if (allowedRoles && allowedRoles.length > 0 && blacklistedRoles && blacklistedRoles.length > 0) {
-                const isAllowed = allowedRoles.some(role => member.cache.has(role));
-                const isBlacklisted = blacklistedRoles.some(role => member.cache.has(role));
+            if (allowedRoles || blacklistedRoles) {
+                const isAllowed = allowedRoles?.some(role => member.cache.has(role));
+                const isBlacklisted = blacklistedRoles?.some(role => member.cache.has(role));
 
                 if (!isAllowed || isBlacklisted) {
                     return interaction.reply({
