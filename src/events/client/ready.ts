@@ -19,6 +19,7 @@ export default <BaseEvent>{
             ]
         })
 
-        Logger.success(`Number of application commands: ${client.commands.size}`);
+        Logger.success(`Number of commands: ${client.commands.size}`);
+        Logger.success(`Number of application commands: ${client.application?.commands.cache.size}`);
     }
 };
